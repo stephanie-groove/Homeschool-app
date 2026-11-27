@@ -1623,7 +1623,8 @@ function bugsHtml(){
   const done=BUGS.filter((_,j)=>(B.d[j]||[]).filter(Boolean).length===3).length;
   return `<section class="box bughero"><p class="muted" style="margin:0">Nature study for both children, once or twice a week</p>
     <h2 style="margin:4px 0 6px">Bug Lab</h2>
-    <div class="bar2"><i style="width:${done/BUGS.length*100}%"></i></div><p class="muted" style="margin:6px 0 0;font-size:.88rem">${done} of ${BUGS.length} weeks explored</p></section>
+    <div class="bar2"><i style="width:${done/BUGS.length*100}%"></i></div><p class="muted" style="margin:6px 0 0;font-size:.88rem">${done} of ${BUGS.length} weeks explored</p>
+    <a class="btn alt wide" href="/science/" style="margin-top:12px;text-align:center">See the real bugs: photo field guide</a></section>
   <section class="box">
     <p class="muted" style="margin:0">Week ${i+1} of ${BUGS.length}</p>
     <h2>${esc(w.t)}</h2>
