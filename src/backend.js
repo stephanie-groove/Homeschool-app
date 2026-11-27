@@ -1,6 +1,7 @@
 // Connects the app to Supabase (sign-in, saved progress, uploads) and to /api/coach (AI coach).
 // It provides the same small interface the app already uses: window.claude.use("db" | "user" | "assets" | "sample").
 import { createClient } from "@supabase/supabase-js";
+import { sceneSvg } from "./scene.js";
 
 const url = import.meta.env.VITE_SUPABASE_URL;
 const key = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -23,18 +24,19 @@ function gate(msg) {
     const tiles = [["s",62,40,-8,"#F7E2D5"],["a",136,4,4,"#F8EDCB"],["t",210,42,-3,"#E4ECD8"],["i",112,114,6,"#DDECEF"],["n",186,120,-6,"#FFFEF8"]]
       .map(([l,x,y,r,c]) => `<span style="left:${x-40}px;top:${y}px;transform:rotate(${r}deg);background:${c}">${l}</span>`).join("");
     el.innerHTML = `
+      <div class="scn gatescene">${sceneSvg()}</div>
       <div class="welcome">
         <div class="tag">A quiet place to learn to read</div>
         <h1 class="wm" aria-label="Reading Path">${[..."READING"].map(c=>`<span>${c}</span>`).join("")} ${[..."PATH"].map(c=>`<span>${c}</span>`).join("")}</h1>
         <div class="ltiles" aria-hidden="true">${tiles}</div>
-        <p class="muted" style="font-size:1.05rem;margin:0">One calm class a day, made for tired parents and little learners. Prayer, songs, a short lesson, play and a story.</p>
+        <p class="lede">One calm class a day, made for tired parents and little learners. Prayer, songs, a short lesson, play and a story.</p>
         <div class="pills"><span style="background:#F7E2D5;color:#2B3A2E">Phonics, ages 3 to 5</span><span style="background:#DDECEF;color:#2B3A2E">Spelling, ages 6 to 8</span></div>
-        <form id="authForm" style="text-align:left">
+        <form id="authForm" class="gatecard">
           <label class="f" for="authEmail">Your email</label>
           <input type="email" id="authEmail" required autocomplete="email" placeholder="you@example.com" style="width:100%;font:inherit;padding:12px 14px;color:var(--ink)">
           <button class="btn wide" style="margin-top:12px" type="submit">Email me a sign-in link</button>
+          <p class="muted" id="authMsg" style="margin:10px 2px 0;font-size:.9rem" aria-live="polite">No password. We email you a link, and new families get an account automatically.</p>
         </form>
-        <p class="muted" id="authMsg" style="margin:12px 0 0" aria-live="polite">No password. We email you a link, and new families get an account automatically.</p>
       </div>`;
     Object.assign(el.style, { position: "fixed", inset: "0", zIndex: "50", background: "var(--bg)", display: "flex", padding: "20px" });
     document.body.appendChild(el);
