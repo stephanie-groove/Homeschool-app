@@ -446,6 +446,85 @@ body.locked .bnav{display:none}
 .ltiles span{position:absolute; width:58px; height:58px; border-radius:16px; display:grid; place-items:center; font-size:2rem; font-weight:700; color:#2B3A2E; box-shadow:0 6px 0 rgba(47,74,53,.08)}
 .pills{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin:12px 0 16px}
 .pills span{border-radius:99px; padding:6px 14px; font-size:.9rem}
+
+/* ===== landing look and motion, across the app ===== */
+.skyhead,.lsky{position:relative; overflow:hidden; isolation:isolate; color:#fff; background:linear-gradient(180deg,#7FB3D0 0%,#A9CDE0 38%,#D9E8E3 62%,#E9EED2 100%)}
+.skyhead{margin:-22px -18px 18px; padding:calc(16px + env(safe-area-inset-top,0px)) 18px 150px; min-height:270px; border-radius:0 0 32px 32px}
+.skyhead.tall{padding-bottom:190px}
+.scn{position:absolute; inset:0; z-index:-1; pointer-events:none}
+.scn .scene{width:100%; height:100%; display:block}
+.skc{position:relative}
+.skyhead h1{color:#fff; font-weight:600; font-size:clamp(2.5rem,11vw,3.6rem); line-height:.98; margin:6px 0 14px; text-shadow:0 2px 4px rgba(28,70,120,.25),0 4px 26px rgba(28,70,120,.45)}
+.skyhead .kicker{color:#fff; font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; letter-spacing:.14em; font-size:.85rem; margin:0; text-shadow:0 1px 8px rgba(28,70,120,.45)}
+.skyhead > .skc > .x{margin-bottom:14px}
+.glass{background:rgba(47,74,53,.42)!important; border:1.5px solid rgba(255,255,255,.7)!important; color:#fff!important; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px)}
+.glass svg{stroke:#fff!important}
+.skyhead .hello{margin:0 0 18px}
+.skyhead .hello .av{color:#fff}
+.skyhead .hello .linkbtn{flex:1; text-align:left; color:#fff; font-weight:700; font-size:.9rem; text-shadow:0 1px 6px rgba(28,70,120,.5)}
+.skyhead .unitcard{background:rgba(255,254,248,.78); color:#2B3A2E; -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border:1.5px solid rgba(255,255,255,.8); margin:0; max-width:420px}
+.skyhead .unitcard h2{color:#2B3A2E}
+.skyhead .unitcard .ubar{background:rgba(47,74,53,.14)}
+.skyhead .unitcard .ubar i{background:#2F4A35}
+.skyhead .kids button{background:rgba(47,74,53,.42); border-color:rgba(255,255,255,.7); color:#fff; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px)}
+.skyhead .kids button[aria-selected="true"]{background:#2F4A35; border-color:#2F4A35; color:#fff}
+
+/* lesson and sheet banners */
+.lsky{margin:-14px -18px 10px; padding:calc(14px + env(safe-area-inset-top,0px)) 18px 96px; flex:none}
+.lsky.short{padding-bottom:70px}
+@media (min-width:700px){ .lsky{border-radius:28px 28px 0 0} }
+.lsky .ptop{padding-top:0}
+.lsky .segs i{background:rgba(255,255,255,.45)}
+.lsky .segs i.on{background:#2F4A35}
+.lsky .segname,.lsky .ptop h2{color:#fff; text-shadow:0 1px 8px rgba(28,70,120,.5)}
+.lsky .segname{font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; letter-spacing:.1em; font-size:.85rem}
+.lsky .ptop h2{font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; letter-spacing:.02em; font-weight:500; font-size:1.6rem!important}
+
+/* the bottom bar stays forest green in both modes */
+.bnav{background:#2F4A35}
+.bnav svg{stroke:#F4F2DF}
+
+/* scene motion (same as the landing page) */
+.cloud{animation:drift linear infinite}
+.c1{animation-duration:90s} .c2{animation-duration:130s; animation-delay:-40s} .c3{animation-duration:110s; animation-delay:-80s}
+@keyframes drift{from{transform:translateX(-30%)} to{transform:translateX(130%)}}
+.sway{transform-box:fill-box; transform-origin:50% 100%; animation:sway 4.5s ease-in-out infinite}
+.sway.b{animation-duration:5.5s; animation-delay:-1.2s} .sway.c{animation-duration:3.8s; animation-delay:-2.4s}
+@keyframes sway{0%,100%{transform:rotate(-3deg)} 50%{transform:rotate(3deg)}}
+.leafs{transform-box:fill-box; transform-origin:50% 90%; animation:rustle 6s ease-in-out infinite}
+@keyframes rustle{0%,100%{transform:rotate(-.6deg)} 50%{transform:rotate(.8deg)}}
+
+/* content rises in */
+.rv{opacity:0; transform:translateY(26px); transition:opacity .8s ease, transform .9s cubic-bezier(.2,.8,.2,1); transition-delay:calc(var(--i,0) * 80ms)}
+.rv.in{opacity:1; transform:none}
+.rise > *{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+.rise > *:nth-child(2){animation-delay:.07s} .rise > *:nth-child(3){animation-delay:.14s} .rise > *:nth-child(4){animation-delay:.21s} .rise > *:nth-child(n+5){animation-delay:.28s}
+@keyframes rise{from{opacity:0; transform:translateY(18px)} to{opacity:1; transform:none}}
+
+/* the butterfly */
+#bfly{position:fixed; z-index:60; left:0; top:0; width:64px; height:64px; pointer-events:none; will-change:transform}
+#bfly svg{width:100%; height:100%}
+#bfly .w{transform-box:fill-box; animation:flap .32s ease-in-out infinite alternate}
+#bfly .wl{transform-origin:100% 50%} #bfly .wr{transform-origin:0% 50%}
+@keyframes flap{from{transform:scaleX(1)} to{transform:scaleX(.25)}}
+
+@media (prefers-reduced-motion:reduce){
+  .cloud,.sway,.leafs,#bfly .w,.rise > *{animation:none}
+  .rv{opacity:1; transform:none; transition:none}
+  #bfly{display:none}
+}
+
+/* sign-in: the landing page's hillside */
+#authGate{background:linear-gradient(180deg,#7FB3D0 0%,#A9CDE0 38%,#D9E8E3 62%,#E9EED2 100%)!important; isolation:isolate}
+#authGate .gatescene{position:fixed}
+#authGate .welcome::before{display:none}
+#authGate .tag{color:#fff; text-shadow:0 1px 8px rgba(28,70,120,.45)}
+#authGate h1{text-shadow:0 2px 14px rgba(255,255,255,.55)}
+#authGate .lede{color:#22352A; font-size:1.05rem; margin:0; text-shadow:0 0 10px rgba(255,255,255,.85),0 0 2px rgba(255,255,255,.9)}
+#authGate .gatecard{text-align:left; background:#FFFEF8; color:#2B3A2E; border-radius:24px; padding:16px; box-shadow:0 12px 40px rgba(28,70,120,.18); margin-bottom:220px}
+#authGate .gatecard .f,#authGate .gatecard .muted{color:#55624F}
+#authGate .gatecard input{background:#FBFAEC!important; color:#2B3A2E!important}
+#authGate .gatecard .btn{background:#2F4A35; color:#fff}
 </style>
 </head>
 <body>
@@ -453,8 +532,9 @@ body.locked .bnav{display:none}
 
 <div class="sheet" id="classSheet" role="dialog" aria-modal="true" aria-label="Today's class">
   <div class="panel">
-    <div class="ptop"><div class="segs" id="segs"></div><button class="x" id="cclose" aria-label="Close class">×</button></div>
-    <p class="segname" id="segname"></p>
+    <div class="lsky"><div class="scn"></div>
+    <div class="ptop"><div class="segs" id="segs"></div><button class="x glass" id="cclose" aria-label="Close class">×</button></div>
+    <p class="segname" id="segname"></p></div>
     <div class="body" id="cbody"></div>
     <div class="foot" id="cfoot"></div>
   </div>
@@ -462,7 +542,8 @@ body.locked .bnav{display:none}
 
 <div class="sheet" id="coachSheet" role="dialog" aria-modal="true" aria-label="Parent coach">
   <div class="panel">
-    <div class="ptop"><h2 style="flex:1;margin:0;font-size:1.2rem">Parent coach</h2><button class="x" id="kclose" aria-label="Close coach">×</button></div>
+    <div class="lsky short"><div class="scn"></div>
+    <div class="ptop"><h2 style="flex:1;margin:0;font-size:1.2rem">Parent coach</h2><button class="x glass" id="kclose" aria-label="Close coach">×</button></div></div>
     <p class="disc">Gentle guidance on tears, focus and tired days. Not medical advice: for health or development worries, talk with your pediatrician.</p>
     <div class="chat" id="chat"></div>
     <div class="quick" id="quick"></div>
@@ -472,14 +553,16 @@ body.locked .bnav{display:none}
 
 <div class="sheet" id="storySheet" role="dialog" aria-modal="true" aria-label="This week's story">
   <div class="panel">
-    <div class="ptop"><h2 style="flex:1;margin:0;font-size:1.2rem">This week's story</h2><button class="x" id="sclose" aria-label="Close">×</button></div>
+    <div class="lsky short"><div class="scn"></div>
+    <div class="ptop"><h2 style="flex:1;margin:0;font-size:1.2rem">This week's story</h2><button class="x glass" id="sclose" aria-label="Close">×</button></div></div>
     <div class="body" id="sbody"></div>
   </div>
 </div>
 
 <div class="sheet" id="placeSheet" role="dialog" aria-modal="true" aria-label="Starting check">
   <div class="panel">
-    <div class="ptop"><h2 style="flex:1;margin:0;font-size:1.2rem">Starting check</h2><button class="x" id="plclose" aria-label="Close">×</button></div>
+    <div class="lsky short"><div class="scn"></div>
+    <div class="ptop"><h2 style="flex:1;margin:0;font-size:1.2rem">Starting check</h2><button class="x glass" id="plclose" aria-label="Close">×</button></div></div>
     <div class="body" id="pbody"></div>
   </div>
 </div>

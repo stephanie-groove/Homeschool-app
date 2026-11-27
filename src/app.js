@@ -1,3 +1,4 @@
+import { sceneSvg, reveal, startButterfly, flyTo, spotFor } from "./scene.js";
 /* Reading Path app. Runs on top of src/backend.js, which provides window.claude (db, user, assets, sample) and blobSrc(). */
 const TRACKS = {
   phonics: {
@@ -1047,6 +1048,15 @@ const TITLES = {mom:"For Mom", calm:"Calm corner", bugs:"Bug Lab", print:"Printa
 const svg = (p, cls="") => `<svg viewBox="0 0 24 24" aria-hidden="true"${cls?` class="${cls}"`:""}>${p}</svg>`;
 const CHECK = '<path d="M5 12l5 5 9-10"/>';
 
+const BACK = '<path d="M15 5l-7 7 7 7"/>';
+function skyHead({kicker="", title="", back=false, top="", extra="", tall=false}){
+  return `<header class="skyhead${tall?" tall":""}"><div class="scn">${sceneSvg()}</div><div class="skc">
+    ${back?`<button class="x glass" data-view="today" aria-label="Back to Today">${svg(BACK)}</button>`:""}${top}
+    ${kicker?`<p class="kicker">${kicker}</p>`:""}<h1>${title}</h1>${extra}</div></header>`;
+}
+const VIEW_SPOT = {today:[.14,.5], week:[.2,.3], dash:[.22,.26], mom:[.2,.26], calm:[.24,.27], bugs:[.2,.26], print:[.22,.27], library:[.2,.26]};
+let lastView = null;
+
 function navHtml(){
   const v = state.view || "today";
   return `<nav class="bnav" aria-label="Sections">${NAV.map(([k,l,p])=>`<button ${k==="coach"?'id="navCoach"':`data-view="${k}"`} aria-label="${l}" aria-pressed="${v===k}">${svg(p)}</button>`).join("")}</nav>`;
@@ -1058,9 +1068,12 @@ function render(){
   const VIEWS = {today:[todayHtml,bindToday], week:[weekHtml,bindWeek], dash:[dashHtml,bindDash], mom:[momHtml,bindMom], calm:[calmHtml,bindCalm], bugs:[bugsHtml,bindBugs], print:[printHtml,bindPrint], library:[libHtml,bindLib]};
   const [html, bind] = VIEWS[v] || VIEWS.today;
   let top = "";
-  if (v==="dash") top = `<header class="pagehead"><p class="kicker">Faithful, not perfect</p><h1>Dashboard</h1></header>`;
-  else if (TITLES[v]) top = `<header class="crumb"><button class="x" data-view="today" aria-label="Back to Today">${svg('<path d="M15 5l-7 7 7 7"/>')}</button><h1>${TITLES[v]}</h1></header>`;
+  if (v==="dash") top = skyHead({kicker:"Faithful, not perfect", title:"Dashboard"});
+  else if (TITLES[v]) top = skyHead({kicker:"Reading Path", title:TITLES[v], back:true});
   $("app").innerHTML = top + html() + navHtml();
+  const changed = v!==lastView; lastView = v;
+  reveal($("app"), changed);
+  flyTo(...(VIEW_SPOT[v]||VIEW_SPOT.today));
   bindView();
   $("navCoach").onclick = () => openCoach();
   bind();
@@ -1075,13 +1088,13 @@ function todayHtml(){
   const uDone = unit.filter(i=>(s.d[i]||[]).filter(Boolean).length===5).length;
   const uPct = Math.round(((unit.indexOf(wi) + daysFor(wi).filter(Boolean).length/5) / unit.length) * 100);
 
-  let h = `<header class="hello"><span class="av">${esc((nm()[0]||"?").toUpperCase())}</span>
-    <div class="who"><b>Hello, ${esc(nm())}</b><button class="linkbtn" id="switchKid">Switch to ${esc(state.names[other])}</button></div>
-    <button class="iconbtn" data-view="week" aria-label="Week plan and settings">${svg('<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/>')}</button></header>`;
-
-  h += `<section class="unitcard"><span>Week ${wi+1} of ${total} · ${esc(TRACKS[state.tab].who)}</span>
-    <h2>${esc(w.unit)}</h2><div class="ubar" role="progressbar" aria-label="Progress through this unit" aria-valuenow="${uPct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${uPct}%"></i></div>
-    <span>${uDone} of ${unit.length} week${unit.length===1?"":"s"} done this unit</span></section>`;
+  const hr=new Date().getHours(), greet = hr<12?"Good morning":hr<17?"Good afternoon":"Good evening";
+  let h = skyHead({tall:true, kicker:`Week ${wi+1} of ${total} · ${esc(TRACKS[state.tab].who)}`, title:`${greet},<br>${esc(nm())}`,
+    top:`<div class="hello"><span class="av glass">${esc((nm()[0]||"?").toUpperCase())}</span>
+      <button class="linkbtn" id="switchKid">Switch to ${esc(state.names[other])}</button>
+      <button class="iconbtn glass" data-view="week" aria-label="Week plan and settings">${svg('<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/>')}</button></div>`,
+    extra:`<div class="unitcard"><span>This unit</span><h2>${esc(w.unit)}</h2><div class="ubar" role="progressbar" aria-label="Progress through this unit" aria-valuenow="${uPct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${uPct}%"></i></div>
+      <span>${uDone} of ${unit.length} week${unit.length===1?"":"s"} done</span></div>`});
 
   h += `<nav class="hub" aria-label="More">${HUB.map(([k,l,c,p])=>`<button data-view="${k}"><span class="ico ${c}">${svg(p)}</span>${l}</button>`).join("")}</nav>`;
 
@@ -1129,8 +1142,8 @@ function bindToday(){
 function weekHtml(){
   const t=T(), s=S(), wi=s.cur, w=t.weeks[wi], day=todayIdx(), total=t.weeks.length, done=doneCount(state.tab);
   const d=daysFor(wi);
-  let h = `<header class="pagehead arc"><p class="kicker">Week ${wi+1} of ${total}, ${esc(nm())}</p><h1>Pick up where<br>you left off</h1>
-    <div class="kids" role="tablist" aria-label="Child">${["phonics","spelling"].map(k=>`<button role="tab" data-tab="${k}" aria-selected="${state.tab===k}">${esc(state.names[k])}</button>`).join("")}</div></header>`;
+  let h = skyHead({kicker:`Week ${wi+1} of ${total}, ${esc(nm())}`, title:"Pick up where<br>you left off",
+    extra:`<div class="kids" role="tablist" aria-label="Child">${["phonics","spelling"].map(k=>`<button role="tab" data-tab="${k}" aria-selected="${state.tab===k}">${esc(state.names[k])}</button>`).join("")}</div>`});
 
   h += `<div class="cardhead"><b>${esc(w.t)}</b><span class="muted">${d.filter(Boolean).length} of 5 lessons</span></div>
     <div class="days">${t.days.map(([a],j)=>{
@@ -1755,3 +1768,9 @@ function alphaSvg(ch, size=120){
 })();
 
 window.render = render;
+{
+  const baseSeg = renderSeg;
+  renderSeg = function(){ baseSeg.apply(this, arguments); const cb=$("cbody"); cb.classList.remove("rise"); void cb.offsetWidth; cb.classList.add("rise"); if (C) flyTo(...spotFor(C.i)); };
+  document.querySelectorAll(".scn").forEach(e=>{ if(!e.firstChild) e.innerHTML=sceneSvg(); });
+  startButterfly();
+}
