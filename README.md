@@ -36,6 +36,8 @@ npm run dev                  # app at http://localhost:5173
 The `/api/coach` function only runs on Vercel, or locally with `npx vercel dev`.
 
 ## How the pieces fit
+- `index.html`: the landing page, served at `/`. Its email box sends the sign-in link, and sign-in links that land on `/` are passed on to the app.
+- `app/index.html`: the app page, served at `/app/` (styles live here).
 - `src/app.js`: the whole app (curriculum data, lessons, tabs).
 - `src/backend.js`: sign-in screen, and the bridge that saves progress to `family_state`, uploads videos and photos to the private `media` bucket, and streams coach replies.
 - `api/coach.js`: checks the parent is signed in, enforces the daily limit, adds safety instructions, and streams Claude's reply.
