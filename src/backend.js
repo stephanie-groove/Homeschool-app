@@ -21,8 +21,9 @@ function gate(msg) {
   if (!el) {
     el = document.createElement("div");
     el.id = "authGate";
-    const tiles = [["s",62,40,-8,"#F7E2D5"],["a",136,4,4,"#F8EDCB"],["t",210,42,-3,"#E4ECD8"],["i",112,114,6,"#DDECEF"],["n",186,120,-6,"#FFFEF8"]]
-      .map(([l,x,y,r,c]) => `<span style="left:${x-40}px;top:${y}px;transform:rotate(${r}deg);background:${c}">${l}</span>`).join("");
+    // SATPIN: the first six sounds children learn
+    const tiles = [["s",8,38,-8,"#F7E2D5"],["a",82,4,4,"#F8EDCB"],["t",156,36,-3,"#E4ECD8"],["p",222,6,6,"#DDECEF"],["i",50,118,6,"#FFFEF8"],["n",134,120,-6,"#F7E2D5"]]
+      .map(([l,x,y,r,c]) => `<span style="left:${x}px;top:${y}px;transform:rotate(${r}deg);background:${c}">${l}</span>`).join("");
     el.innerHTML = `
       <div class="scn gatescene">${sceneSvg()}</div>
       <div class="welcome">

@@ -1,0 +1,2 @@
+// Words that have a real photo in public/words/. Credits: public/words/credits.html
+export default {"apple":1,"banana":1,"bat":1,"bed":1,"bee":1,"bug":1,"bunny":1,"cat":1,"caterpillar":1,"crab":1,"cup":1,"dog":1,"duck":1,"fan":1,"fox":1,"frog":1,"grapes":1,"hen":1,"house":1,"jellyfish":1,"log":1,"milk":1,"mountains":1,"nap":1,"nut":1,"orange":1,"pig":1,"pin":1,"rabbit":1,"ship":1,"snake":1,"sun":1,"tree":1,"up":1,"vine":1,"waves":1,"web":1,"zap":1};

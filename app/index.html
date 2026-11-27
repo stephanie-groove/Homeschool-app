@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Reading Path · Today</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#2F4A35">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
 <meta name="description" content="One calm homeschool class a day: phonics, spelling, nature study and support for tired moms.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -587,6 +590,118 @@ body.locked .bnav{display:none}
 .p-petal{animation:petal calc(9s * var(--s)) linear infinite; animation-delay:var(--d)}
 @keyframes petal{from{translate:0 -20px; rotate:0deg; opacity:0} 10%{opacity:1} to{translate:-70px 420px; rotate:300deg; opacity:.2}}
 @media (prefers-reduced-motion:reduce){ .rcard *, .rview, .rv-stage{animation:none!important} .rcard:hover{transform:none} }
+
+/* real photos for words */
+.picgrid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; width:100%; max-width:420px}
+.picc{display:flex; flex-direction:column; border:0; padding:0; background:var(--card); border-radius:20px; overflow:hidden; box-shadow:0 0 0 2px #fff, 0 6px 16px rgba(43,58,46,.14); cursor:pointer}
+.picc img{width:100%; aspect-ratio:4/3; object-fit:cover; display:block}
+.picc b{font-size:clamp(1.4rem,6vw,1.9rem); padding:4px 0 8px; color:var(--ink)}
+.wordpic{width:min(220px,60%); aspect-ratio:4/3; object-fit:cover; border-radius:18px; box-shadow:0 0 0 3px #fff, 0 8px 20px rgba(43,58,46,.16)}
+.stage.has-pics{aspect-ratio:auto; min-height:260px; padding:16px 12px}
+.chips button{display:inline-flex; align-items:center; gap:6px}
+.chips button img{width:28px; height:28px; border-radius:50%; object-fit:cover; margin-left:-6px}
+.ltiles{width:290px!important}
+
+/* ===== Letters: meadow path, letter card, garden, journal, settings ===== */
+:root{ --cons:#E9A5B1; --cons-bg:#FBE9EC; --vow:#8DB7DD; --vow-bg:#E6F0F8; --mead1:#BFD8B8; --mead2:#8DB78A; --mead3:#5E8F62; }
+.fr{font-family:"Fraunces",Georgia,serif!important; text-transform:none!important; letter-spacing:0!important; font-weight:500!important}
+.kicker2{margin:0; font-size:.8rem; color:var(--soft); letter-spacing:.04em}
+.lchips{display:flex; gap:8px; margin:0 0 14px; flex-wrap:wrap}
+.lchips button{display:inline-flex; align-items:center; gap:6px; border:1.5px solid var(--edge); background:var(--card); border-radius:99px; padding:8px 14px; min-height:44px; font-size:.95rem}
+.lchips svg{width:18px; height:18px; fill:none; stroke:var(--ink); stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round}
+.ltoday{display:flex; align-items:center; gap:14px}
+.ltoday .lt-txt{flex:1; min-width:0}
+.ltoday h2.fr{font-size:2rem!important; margin:0 0 2px; line-height:1}
+.lt-snd{font-family:Andika,sans-serif; font-size:1rem}
+.lt-pic{width:84px; height:84px; flex:none; border-radius:22px; display:grid; place-items:center; overflow:hidden}
+.lt-pic.cons,.lcard.cons,.pcardx.cons{background:var(--cons-bg); box-shadow:inset 0 0 0 2px var(--cons)}
+.lt-pic.vowel,.lcard.vowel,.pcardx.vowel{background:var(--vow-bg); box-shadow:inset 0 0 0 2px var(--vow)}
+.lt-plain{font-family:Andika,sans-serif; font-size:2.6rem; font-weight:700}
+.meadow{position:relative; margin:4px -18px 10px; background:linear-gradient(180deg,var(--mead1),#CFE3C6 30%,var(--mead1) 70%,#B2D0A9); border-radius:32px; overflow:hidden}
+.mpath{position:absolute; inset:0; width:100%; height:100%}
+.steplab{position:absolute; font-family:"Fraunces",Georgia,serif; font-style:italic; color:#3F6B4A; font-size:.95rem}
+.stone{position:absolute; width:60px; height:60px; border-radius:50% 48% 52% 46%; border:0; background:#F6F1E4; box-shadow:0 4px 0 rgba(63,107,74,.25), inset 0 0 0 2.5px var(--cons); display:grid; place-items:center; font-family:Andika,sans-serif; font-weight:700; font-size:1.6rem; color:#2F3B33; padding:0}
+.stone.vowel{box-shadow:0 4px 0 rgba(63,107,74,.25), inset 0 0 0 2.5px var(--vow)}
+.stone.done{background:#EAF3E3}
+.stone .sprout{position:absolute; width:30px; height:30px; top:-20px; left:15px; fill:none; stroke:#3F6B4A; stroke-width:1.6}
+.stone.now::after{content:""; position:absolute; inset:-9px; border-radius:50%; border:3px solid rgba(255,255,255,.9); animation:ring 2.6s ease-in-out infinite}
+@keyframes ring{0%,100%{transform:scale(.94); opacity:.5} 50%{transform:scale(1.06); opacity:1}}
+
+/* letter sheet */
+.lsheet{position:fixed; inset:0; z-index:54; background:var(--bg); display:flex; flex-direction:column; padding:calc(14px + env(safe-area-inset-top,0px)) 18px calc(16px + env(safe-area-inset-bottom,0px)); overflow:auto; animation:fadein .3s ease both}
+.lsheet > *{width:100%; max-width:480px; margin-left:auto; margin-right:auto}
+.ls-top{display:flex; align-items:center; gap:10px}
+.ls-top .kicker2{flex:1}
+.lbtn{display:inline-flex; align-items:center; gap:6px; border:0; background:var(--forest); color:var(--on-forest); border-radius:99px; padding:10px 16px; min-height:44px; font-weight:700}
+.lbtn svg{width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+.ls-body{flex:1; padding:14px 0}
+.flip{perspective:1200px}
+.lcard{position:relative; border-radius:30px; min-height:400px; transition:transform .7s cubic-bezier(.3,.7,.2,1); transform-style:preserve-3d}
+.flip.flipped .lcard{transform:rotateY(180deg)}
+.lc-face{position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; padding:18px}
+.lc-face.front{position:relative; min-height:400px}
+.lc-face.back{transform:rotateY(180deg); text-align:center}
+.al{font-family:Andika,sans-serif; font-weight:700}
+.lc-sound{margin:0; font-family:Andika,sans-serif; font-size:3rem; font-weight:700; color:#2F3B33; animation:rise .6s both}
+.lc-word{display:flex; flex-direction:column; align-items:center; gap:6px; animation:rise .6s both}
+.lc-word img{width:150px; aspect-ratio:4/3; object-fit:cover; border-radius:16px; box-shadow:0 0 0 3px #fff}
+.lc-word b{font-family:Andika,sans-serif; font-size:2rem; color:#2F3B33}
+.lc-trick{font-family:"Fraunces",Georgia,serif; font-style:italic; font-size:1.5rem; line-height:1.35; color:#2F3B33; max-width:320px}
+.ls-actions,.ls-foot{display:flex; gap:8px; margin-top:8px}
+.ls-actions .btn,.ls-foot .btn{flex:1}
+.ls-foot .btn[aria-pressed="true"]{background:var(--leaf-bg); border-color:var(--mead3)}
+.find-q{font-size:1.6rem; text-align:center; margin:6px 0 14px}
+.findgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+.fpic{display:flex; flex-direction:column; border:0; padding:0; background:var(--card); border-radius:18px; overflow:hidden; box-shadow:0 0 0 2px var(--edge)}
+.fpic img{width:100%; aspect-ratio:1; object-fit:cover}
+.fpic .fword{display:grid; place-items:center; aspect-ratio:1; font-size:1.2rem; background:var(--leaf-bg)}
+.fpic b{padding:6px 0 8px; font-family:Andika,sans-serif; font-size:1.15rem}
+.fpic.yes{box-shadow:0 0 0 4px var(--mead3); animation:pop .4s both}
+.fpic.no{animation:shake .45s both}
+@keyframes shake{20%,60%{transform:translateX(-5px)} 40%,80%{transform:translateX(5px)}}
+.find-msg{text-align:center; margin-top:12px}
+
+/* garden */
+.gintro{margin:0 4px 12px}
+.garden{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; background:linear-gradient(180deg,#E6F0E0,#D7E8CF); border-radius:28px; padding:14px 10px}
+@media (min-width:480px){ .garden{grid-template-columns:repeat(6,1fr)} }
+.plot{border:0; background:none; display:flex; flex-direction:column; align-items:center; padding:2px; min-height:44px}
+.plot svg{width:100%; max-width:64px; height:auto}
+.plot span{font-family:Andika,sans-serif; font-weight:700; font-size:1.05rem; color:#2F3B33; border-bottom:2.5px solid var(--cons)}
+.plot span.vowel{border-color:var(--vow)}
+.plot.resting span{opacity:.55}
+.plot .bloom{transform-box:fill-box; transform-origin:50% 100%; animation:sway 5s ease-in-out infinite}
+.plot:nth-child(3n) .bloom{animation-duration:6.2s} .plot:nth-child(4n+1) .bloom{animation-delay:-2s}
+
+/* journal */
+.jkid{margin:8px 0 12px}
+.jsteps{display:grid; grid-template-columns:repeat(5,1fr); gap:6px; margin-top:6px}
+.jsteps div{position:relative; height:28px; background:var(--bg); border-radius:10px; overflow:hidden}
+.jsteps i{position:absolute; inset:0 auto 0 0; background:var(--mead1)}
+.jsteps span{position:relative; display:block; text-align:center; font-size:.72rem; line-height:28px}
+.jlist{padding-left:1.3em; margin:0} .jlist li{margin-bottom:8px}
+.jphoto{margin:4px 0 10px} .jphoto img{width:100%; max-height:280px; object-fit:cover; border-radius:18px}
+
+/* settings */
+.kidrow{border-top:1px solid var(--edge); padding-top:6px; margin-top:8px}
+.kidrow:first-of-type{border-top:0}
+select{width:100%; font:inherit; font-size:.95rem; color:var(--ink); background:var(--bg); border:1.5px solid var(--edge); border-radius:16px; padding:10px 12px}
+.vgrid{display:grid; gap:6px}
+.vrow{display:flex; align-items:center; gap:8px}
+.vl{width:40px; height:40px; border-radius:12px; display:grid; place-items:center; font-family:Andika,sans-serif; font-weight:700; font-size:1.2rem; background:var(--cons-bg)}
+.vl.vowel{background:var(--vow-bg)}
+.vs{width:44px}
+.vrow .btn.sm{padding:8px 12px; min-height:40px}
+
+/* printable letter cards */
+#printCards-sheet{display:none}
+@media print{
+  body.print-letters > *{display:none!important}
+  body.print-letters #printCards-sheet{display:grid!important; grid-template-columns:repeat(3,1fr); gap:10mm}
+  .pcardx{break-inside:avoid; border-radius:6mm; padding:6mm; display:flex; flex-direction:column; align-items:center; gap:2mm; font-family:Andika,sans-serif; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+  .pcardx b{font-size:20pt} .pcardx span{font-size:14pt}
+}
+@media (prefers-reduced-motion:reduce){ .stone.now::after,.plot .bloom,.lcard,.lsheet{animation:none!important; transition:none} }
 </style>
 </head>
 <body>
@@ -630,5 +745,6 @@ body.locked .bnav{display:none}
 </div>
 
 <script type="module" src="/src/main.js"></script>
+<script>if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));</script>
 </body>
 </html>
