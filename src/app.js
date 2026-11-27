@@ -1,3 +1,4 @@
+import WORD_PHOTOS from "./word-photos.js";
 import { SCENES, THEME_SCENE, sceneSvg as rScene, cardHtml, liveCards, openViewer } from "./reminders.js";
 import { sceneSvg, reveal, startButterfly, flyTo, spotFor } from "./scene.js";
 /* Reading Path app. Runs on top of src/backend.js, which provides window.claude (db, user, assets, sample) and blobSrc(). */
@@ -1131,7 +1132,8 @@ function todayHtml(){
 
   h += `<section class="box"><h2>${esc(nm())}'s nature basket</h2><p class="muted" style="margin:0">${esc(nm())} picks one stamp at the end of every class. ${bask.length} so far.</p>
     <div class="basket">${bask.length?bask.map(stampSvg).join(""):'<span class="muted">Empty for now. The first one comes after today\'s class.</span>'}</div></section>
-    <p class="status" id="status">${saveFn?"Progress is saved to your account.":"Progress is saved on this device."}</p>`;
+    <p class="status" id="status">${saveFn?"Progress is saved to your account.":"Progress is saved on this device."}</p>
+    <p class="status" style="margin-top:4px"><a href="/words/credits.html" style="color:inherit">Photo credits</a></p>`;
   return h;
 }
 
@@ -1163,7 +1165,7 @@ function weekHtml(){
 
   h += `<section class="box"><p class="muted" style="margin:0">${esc(w.unit)}</p><h2>This week's words</h2>
     ${w.s.length?`<div class="sounds">${w.s.map(esc).join("  ")}</div>`:""}
-    <div class="chips">${w.w.map(x=>`<button data-say="${esc(x)}">${esc(x)}</button>`).join("")}</div>
+    <div class="chips">${w.w.map(x=>`<button data-say="${esc(x)}">${photoOf(x)?`<img src="${photoOf(x)}" alt="" loading="lazy">`:""}${esc(x)}</button>`).join("")}</div>
     ${w.h?`<p class="muted" style="margin:10px 0 0">${state.tab==="phonics"?"Heart words":"Memory words"}</p><div class="chips h">${w.h.map(x=>`<button data-say="${esc(x)}">${esc(x)}</button>`).join("")}</div>`:""}
     ${w.tip?`<p class="enc" style="margin-top:12px">${esc(w.tip)}</p>`:""}
     ${weekPrintsHtml(state.tab,wi)}
@@ -1337,10 +1339,31 @@ function narrate(text, done){
   if (state.muted||!("speechSynthesis" in window)){ setTimeout(fin,est); return; }
   try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(plain); u.rate=.92; u.onend=()=>setTimeout(fin,900); u.onerror=()=>setTimeout(fin,est); speechSynthesis.speak(u); setTimeout(fin,est*2.2); }catch(e){ setTimeout(fin,est); }
 }
+/* ---------- real photos for words ---------- */
+const photoKey = t => String(t).toLowerCase().replace(/[^a-z]/g,"");
+const photoOf = t => { const k=photoKey(t); return WORD_PHOTOS[k] ? `/words/${k}.jpg` : null; };
+const picCard = (w,d=0) => `<button type="button" class="picc pop" style="--d:${d}s" data-say="${esc(w)}"><img src="${photoOf(w)}" alt="${esc(w)}" loading="lazy"><b>${esc(w)}</b></button>`;
+// Turn word cards in a lesson step into photo cards, and show the photo above a featured word.
+function picify(stage){
+  let pics=false;
+  stage.querySelectorAll(".row").forEach(row=>{
+    const cards=[...row.children].filter(c=>c.classList.contains("card"));
+    if (cards.length>=2 && cards.length===row.children.length && cards.every(c=>photoOf(c.textContent))){
+      row.outerHTML=`<div class="picgrid">${cards.map((c,j)=>picCard(c.textContent.trim(), j*.25)).join("")}</div>`; pics=true;
+    }
+  });
+  stage.querySelectorAll(".word").forEach(el=>{
+    const src=photoOf(el.textContent); if(!src) return;
+    el.insertAdjacentHTML("beforebegin",`<img class="wordpic pop" src="${src}" alt="${esc(photoKey(el.textContent))}">`); pics=true;
+  });
+  stage.classList.toggle("has-pics", pics);
+  stage.querySelectorAll(".picc").forEach(b=>b.onclick=()=>say(b.dataset.say,.8));
+}
 function showStep(i){
   if (!$("stage")) return;
   P.i=i; const s=P.steps[i];
   $("stage").innerHTML=`${s.ph?`<span class="phase">${s.ph}</span>`:""}<div class="scene">${s.html}</div>`; $("cap").textContent=s.cap;
+  picify($("stage"));
   $("pbar").innerHTML=P.steps.map((_,j)=>`<i class="${j<=i?"on":""}"></i>`).join("");
   [...$("steps").children].forEach((li,j)=>li.classList.toggle("now",j===i));
   $("pprev").disabled=i===0; $("pnext").disabled=i===P.steps.length-1;

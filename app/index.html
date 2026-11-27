@@ -587,6 +587,17 @@ body.locked .bnav{display:none}
 .p-petal{animation:petal calc(9s * var(--s)) linear infinite; animation-delay:var(--d)}
 @keyframes petal{from{translate:0 -20px; rotate:0deg; opacity:0} 10%{opacity:1} to{translate:-70px 420px; rotate:300deg; opacity:.2}}
 @media (prefers-reduced-motion:reduce){ .rcard *, .rview, .rv-stage{animation:none!important} .rcard:hover{transform:none} }
+
+/* real photos for words */
+.picgrid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; width:100%; max-width:420px}
+.picc{display:flex; flex-direction:column; border:0; padding:0; background:var(--card); border-radius:20px; overflow:hidden; box-shadow:0 0 0 2px #fff, 0 6px 16px rgba(43,58,46,.14); cursor:pointer}
+.picc img{width:100%; aspect-ratio:4/3; object-fit:cover; display:block}
+.picc b{font-size:clamp(1.4rem,6vw,1.9rem); padding:4px 0 8px; color:var(--ink)}
+.wordpic{width:min(220px,60%); aspect-ratio:4/3; object-fit:cover; border-radius:18px; box-shadow:0 0 0 3px #fff, 0 8px 20px rgba(43,58,46,.16)}
+.stage.has-pics{aspect-ratio:auto; min-height:260px; padding:16px 12px}
+.chips button{display:inline-flex; align-items:center; gap:6px}
+.chips button img{width:28px; height:28px; border-radius:50%; object-fit:cover; margin-left:-6px}
+.ltiles{width:290px!important}
 </style>
 </head>
 <body>
