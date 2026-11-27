@@ -295,6 +295,10 @@ a.btn{display:inline-block; text-decoration:none}
 .shelfh{font-size:1.05rem; color:var(--ink); margin:20px 4px 8px}
 .shelfh small{color:var(--soft); font-weight:400}
 a.btn.alt{color:var(--ink)}
+.alphagrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(104px,1fr)); gap:8px}
+.acard{background:var(--bg); border:1px solid var(--edge); border-radius:16px; padding:8px 4px 10px; display:grid; justify-items:center; gap:2px}
+.acard span{font-size:.85rem; color:var(--soft)}
+@media print{ body.print-alpha *{visibility:hidden} body.print-alpha .alphabox, body.print-alpha .alphabox *{visibility:visible} body.print-alpha .alphabox{position:absolute; left:0; top:0; width:100%; border:0} body.print-alpha #alphaPrint, body.print-alpha .alphabox p, body.print-alpha .alphabox h2{display:none} body.print-alpha .alphagrid{grid-template-columns:repeat(4,1fr)} body.print-alpha .acard{break-inside:avoid; background:#fff} }
 @media (prefers-reduced-motion:reduce){ .calm{animation:none} }
 </style>
 </head>
@@ -334,6 +338,6 @@ a.btn.alt{color:var(--ink)}
   </div>
 </div>
 
-<script type="module" src="/main.js"></script>
+<script type="module" src="/src/main.js"></script>
 </body>
 </html>

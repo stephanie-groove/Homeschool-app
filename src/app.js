@@ -1631,4 +1631,67 @@ function bindLib(){
   document.querySelectorAll("[data-shelf]").forEach(b=>b.onclick=()=>{ state.shelf=b.dataset.shelf; state.ltag=""; save(); render(); });
   document.querySelectorAll("[data-ltag]").forEach(b=>b.onclick=()=>{ state.ltag=b.dataset.ltag; render(); });
 }
+/* ---------- Picture alphabet: each letter becomes a picture of its sound word (original artwork) ---------- */
+const INK="#3B352E";
+const ALPHA = {
+ a:["apple","#C0584A",`<path d="M100 76q1-12 9-18" stroke="#6b4f2a" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M108 60q16-10 26 2q-14 9-26-2z" fill="#7f9c63"/>`],
+ b:["bunny","#A9978A",`<ellipse cx="64" cy="20" rx="7" ry="20" fill="#E9DDD0" stroke="#8C6C4A" stroke-width="3"/><ellipse cx="81" cy="22" rx="7" ry="20" fill="#E9DDD0" stroke="#8C6C4A" stroke-width="3" transform="rotate(14 81 22)"/><circle cx="116" cy="104" r="5" fill="${INK}"/><circle cx="128" cy="116" r="4" fill="#D98C8C"/>`],
+ c:["caterpillar","#8FAA6E",`<circle cx="128" cy="82" r="11" fill="#6F9460"/><circle cx="131" cy="80" r="3" fill="#fff"/><path d="M124 72l-6-14M133 72l5-14" stroke="${INK}" stroke-width="3" stroke-linecap="round"/><g fill="#6F9460"><circle cx="72" cy="100" r="5"/><circle cx="71" cy="126" r="5"/><circle cx="84" cy="146" r="5"/><circle cx="108" cy="151" r="5"/></g>`],
+ d:["duck","#D3B05A",`<circle cx="122" cy="52" r="5" fill="${INK}"/><path d="M134 54l20 4-20 8z" fill="#D9873E"/><path d="M64 140q-18 2-26-10" stroke="#5F95A3" stroke-width="5" fill="none" stroke-linecap="round"/>`],
+ e:["egg","#E6DDCB",`<circle cx="100" cy="98" r="15" fill="#F0C24B"/>`,"#B8A98F"],
+ f:["flag","#5F95A3",`<path d="M126 40l34 12-34 12z" fill="#C9805F"/>`],
+ g:["grapes","#8A6A8F",`<path d="M74 180q-6 8-2 14" stroke="#7f9c63" stroke-width="4" fill="none" stroke-linecap="round"/><g fill="#A88BB0"><circle cx="72" cy="198" r="8"/><circle cx="86" cy="202" r="8"/><circle cx="78" cy="212" r="8"/></g>`],
+ h:["house","#B88A5E",`<path d="M46 70L100 30L154 70" stroke="#C0584A" stroke-width="8" fill="none" stroke-linejoin="round" stroke-linecap="round"/><rect x="93" y="120" width="16" height="30" rx="3" fill="#E9DDD0"/>`],
+ i:["inchworm","#7F9C63",`<circle cx="95" cy="46" r="3.5" fill="#fff"/><circle cx="105" cy="46" r="3.5" fill="#fff"/><circle cx="95" cy="46" r="1.8" fill="${INK}"/><circle cx="105" cy="46" r="1.8" fill="${INK}"/><path d="M96 52q4 3 8 0" stroke="${INK}" stroke-width="2" fill="none"/>`],
+ j:["jellyfish","#5F95A3",`<path d="M90 54q14-30 28 0z" fill="#A3C8D0"/><path d="M95 54q-3 8 0 14M104 54q3 8 0 14M113 54q-3 8 0 14" stroke="#A3C8D0" stroke-width="3" fill="none" stroke-linecap="round"/>`],
+ k:["kite","#8C6C4A",`<path d="M158 16l15 19-15 21-15-21z" fill="#C9805F"/><path d="M158 16v40M143 35h30" stroke="#F3E6D6" stroke-width="2"/><path d="M158 56q-6 14-20 22" stroke="${INK}" stroke-width="2" fill="none" stroke-dasharray="4 4"/>`],
+ l:["ladder","#8C6C4A",`<path d="M136 40v110" stroke="#8C6C4A" stroke-width="10" stroke-linecap="round"/><g stroke="#B89B74" stroke-width="6" stroke-linecap="round"><path d="M112 58h24M112 84h24M112 110h24M112 136h24"/></g>`],
+ m:["mountains","#6E7F5E",`<path d="M68 82l10-8 10 8q-10-3-20 0zM114 82l10-8 10 8q-10-3-20 0z" fill="#fff"/><circle cx="172" cy="44" r="12" fill="#F0C24B"/>`],
+ n:["net","#5F95A3",`<g stroke="#A3C8D0" stroke-width="2.5"><path d="M90 104h22M90 122h22M90 140h22M97 96v54M105 96v54"/></g>`],
+ o:["orange","#D9873E",`<path d="M100 76q8-14 22-14q-5 13-22 14z" fill="#7f9c63"/><g fill="#B8692E" opacity=".5"><circle cx="86" cy="100" r="2"/><circle cx="114" cy="112" r="2"/><circle cx="96" cy="130" r="2"/></g>`],
+ p:["pan","#6B6F73",`<path d="M98 68q-6-10 0-18M114 68q-6-10 0-18M130 68q-6-10 0-18" stroke="#B8A98F" stroke-width="3" fill="none" stroke-linecap="round"/>`],
+ q:["queen","#8A6A8F",`<path d="M78 74l6-20 10 12 8-16 8 16 10-12 6 20z" fill="#D3B05A"/><circle cx="102" cy="48" r="4" fill="#C0584A"/>`],
+ r:["rain","#5F95A3",`<path d="M120 62q8-14 24-9q12-7 20 5q10 2 9 12h-53z" fill="#DDE6EA"/><g fill="#A3C8D0"><path d="M140 78q-6 10 0 14q6-4 0-14z"/><path d="M156 92q-6 10 0 14q6-4 0-14z"/><path d="M146 110q-6 10 0 14q6-4 0-14z"/></g>`],
+ s:["snake","#6F9460",`<circle cx="112" cy="86" r="4" fill="${INK}"/><path d="M124 86l10-2-5 6 8 2" stroke="#C0584A" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`],
+ t:["tree","#8C6C4A",`<g fill="#8FAA6E"><circle cx="88" cy="46" r="18"/><circle cx="110" cy="40" r="20"/><circle cx="100" cy="60" r="16"/></g><circle cx="96" cy="48" r="4" fill="#C0584A"/>`],
+ u:["up","#C9805F",`<path d="M100 66V22M86 36l14-14 14 14" stroke="#5F95A3" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`],
+ v:["vine","#6F9460",`<g fill="#8FAA6E"><path d="M66 104q-14-4-16 8q14 4 16-8z"/><path d="M84 132q14-6 20 4q-12 8-20-4z"/><path d="M134 104q14-4 16 8q-14 4-16-8z"/><path d="M116 132q-14-6-20 4q12 8 20-4z"/></g>`],
+ w:["waves","#5F95A3",`<path d="M42 84q7-11 16-4M92 84q7-11 16-4M142 84q7-11 16-4" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/>`],
+ x:["fox","#C9805F",`<path d="M62 82l6-22 14 14zM138 82l-6-22-14 14z" fill="#C9805F"/><circle cx="100" cy="114" r="6" fill="${INK}"/><circle cx="90" cy="102" r="3" fill="${INK}"/><circle cx="110" cy="102" r="3" fill="${INK}"/>`],
+ y:["yo-yo","#8A6A8F",`<path d="M66 184v12" stroke="${INK}" stroke-width="2"/><circle cx="66" cy="206" r="11" fill="#C9805F"/><circle cx="66" cy="206" r="4" fill="#F3E6D6"/>`],
+ z:["zap","#D3B05A",`<path d="M140 64l10-6-4 12 10-4M60 162l-10 6 4-12-10 4" stroke="#B8902F" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`]
+};
+function alphaSvg(ch, size=120){
+  const e=ALPHA[ch]; if(!e) return "";
+  const [w,col,deco,stroke]=e;
+  return `<svg viewBox="0 -10 200 230" width="${size}" height="${size*1.15}" role="img" aria-label="${ch} for ${w}" style="overflow:visible"><text x="100" y="150" text-anchor="middle" font-family="Andika, sans-serif" font-weight="700" font-size="160" fill="${col}"${stroke?` stroke="${stroke}" stroke-width="3"`:""}>${ch}</text>${deco}</svg>`;
+}
+
+/* ---------- Picture alphabet in the app ---------- */
+(function(){
+  const basePrint = printHtml, baseBindPrint = bindPrint;
+  printHtml = function(){
+    return `<section class="box alphabox"><h2>Picture alphabet</h2><p class="muted" style="margin:0 0 10px">Each letter is drawn as something that starts with its sound, so the shape and the sound stick together. Tap a card to hear it, or print the set for the wall.</p>
+      <div class="alphagrid">${Object.keys(ALPHA).map(c=>`<button class="acard" data-alpha="${c}" aria-label="${c} for ${ALPHA[c][0]}">${alphaSvg(c,92)}<span>${c} · ${ALPHA[c][0]}</span></button>`).join("")}</div>
+      <button class="btn alt wide" id="alphaPrint" style="margin-top:12px">Print the cards</button></section>` + basePrint();
+  };
+  bindPrint = function(){
+    baseBindPrint();
+    document.querySelectorAll("[data-alpha]").forEach(b=>b.onclick=()=>{ const c=b.dataset.alpha; say(`${c}. ${ALPHA[c][0]}.`, .8); });
+    const pb=document.getElementById("alphaPrint");
+    if (pb) pb.onclick=()=>{ document.body.classList.add("print-alpha"); window.print(); setTimeout(()=>document.body.classList.remove("print-alpha"),500); };
+  };
+  const baseMeet = DEMOS.phonics[0];
+  DEMOS.phonics[0] = function(w,t,i){
+    const steps = baseMeet(w,t,i);
+    const s = (w.s||[])[0];
+    if (s && s.length===1 && ALPHA[s] && steps.length>1){
+      const word = ALPHA[s][0];
+      const where = word.startsWith(s) ? "starts" : "ends";
+      steps.splice(1,0,{cap:`Picture clue: this ${s} is drawn as a ${word}. ${word[0].toUpperCase()+word.slice(1)} ${where} with the ${s} sound.`, html:`<div class="pop">${alphaSvg(s,150)}</div>`});
+    }
+    return steps;
+  };
+})();
+
 window.render = render;
