@@ -1028,97 +1028,157 @@ function storyHtml(st, w){
 }
 
 /* ---------- main page ---------- */
-function render(){
-  const t=T(), s=S(), wi=s.cur, w=t.weeks[wi], day=todayIdx(), total=t.weeks.length, done=doneCount(state.tab);
-  const ag=agenda(), mins=ag.reduce((a,b)=>a+b.m,0);
-  const d=daysFor(wi);
-  const bask=state.basket[state.tab]||[];
-  let h=`<h1>Reading Path</h1><p class="sub">One calm class a day. Short, the same every time, and always ends on a good note.</p>
-  <nav class="mainnav" aria-label="Sections">${[["today","Today"],["mom","For Mom"],["calm","Calm"],["bugs","Bug Lab"],["print","Printables"],["library","Library"],["dash","Dashboard"]].map(([k,l])=>`<button data-view="${k}" aria-pressed="${(state.view||"today")===k}">${l}</button>`).join("")}</nav>`;
-  if (state.view==="dash"){ $("app").innerHTML=h+dashHtml(); bindDash(); return; }
-  if (typeof stopBreath==="function" && state.view!=="calm") stopBreath();
-  if (state.view==="mom"){ $("app").innerHTML=h+momHtml(); bindMom(); return; }
-  if (state.view==="calm"){ $("app").innerHTML=h+calmHtml(); bindCalm(); return; }
-  if (state.view==="bugs"){ $("app").innerHTML=h+bugsHtml(); bindBugs(); return; }
-  if (state.view==="print"){ $("app").innerHTML=h+printHtml(); bindPrint(); return; }
-  if (state.view==="library"){ $("app").innerHTML=h+libHtml(); bindLib(); return; }
-  h+=`<div class="tabs" role="tablist">${["phonics","spelling"].map(k=>`<button class="tab" role="tab" data-tab="${k}" aria-selected="${state.tab===k}"><b>${esc(state.names[k])}</b><span>${TRACKS[k].who}</span></button>`).join("")}</div>`;
+const NAV = [
+  ["today","Today",'<path d="M4 11l8-7 8 7v9H4z"/>'],
+  ["week","Week plan",'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/>'],
+  ["dash","Dashboard",'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'],
+  ["coach","Coach",'<path d="M4 5h16v11H9l-5 4z"/>']
+];
+const HUB = [
+  ["mom","For Mom","peach",'<path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/>'],
+  ["calm","Calm","sky",'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/>'],
+  ["bugs","Bug Lab","sage",'<path d="M9 9a3 3 0 016 0"/><rect x="7" y="9" width="10" height="11" rx="5"/><path d="M12 9v11M7 13H4M20 13h-3M7 17l-3 2M17 17l3 2M10 6L8 3M14 6l2-3"/>'],
+  ["print","Printables","butter",'<path d="M7 9V3h10v6"/><rect x="4" y="9" width="16" height="8" rx="2"/><path d="M7 14h10v7H7z"/>'],
+  ["library","Library","peach",'<path d="M4 5h6a2 2 0 012 2v12a2 2 0 00-2-2H4zM20 5h-6a2 2 0 00-2 2v12a2 2 0 012-2h6z"/>']
+];
+const TONE = {prayer:"sky", hello:"butter", lesson:"peach", break:"sage", stem:"sky", story:"butter", bye:"peach"};
+const DAYKEY = ["lesson","break","stem","story","hello"];
+const TITLES = {mom:"For Mom", calm:"Calm corner", bugs:"Bug Lab", print:"Printables", library:"Library"};
+const svg = (p, cls="") => `<svg viewBox="0 0 24 24" aria-hidden="true"${cls?` class="${cls}"`:""}>${p}</svg>`;
+const CHECK = '<path d="M5 12l5 5 9-10"/>';
 
-  h+=`<section class="box">`;
+function navHtml(){
+  const v = state.view || "today";
+  return `<nav class="bnav" aria-label="Sections">${NAV.map(([k,l,p])=>`<button ${k==="coach"?'id="navCoach"':`data-view="${k}"`} aria-label="${l}" aria-pressed="${v===k}">${svg(p)}</button>`).join("")}</nav>`;
+}
+
+function render(){
+  const v = state.view || "today";
+  if (typeof stopBreath==="function" && v!=="calm") stopBreath();
+  const VIEWS = {today:[todayHtml,bindToday], week:[weekHtml,bindWeek], dash:[dashHtml,bindDash], mom:[momHtml,bindMom], calm:[calmHtml,bindCalm], bugs:[bugsHtml,bindBugs], print:[printHtml,bindPrint], library:[libHtml,bindLib]};
+  const [html, bind] = VIEWS[v] || VIEWS.today;
+  let top = "";
+  if (v==="dash") top = `<header class="pagehead"><p class="kicker">Faithful, not perfect</p><h1>Dashboard</h1></header>`;
+  else if (TITLES[v]) top = `<header class="crumb"><button class="x" data-view="today" aria-label="Back to Today">${svg('<path d="M15 5l-7 7 7 7"/>')}</button><h1>${TITLES[v]}</h1></header>`;
+  $("app").innerHTML = top + html() + navHtml();
+  bindView();
+  $("navCoach").onclick = () => openCoach();
+  bind();
+}
+
+function todayHtml(){
+  const t=T(), s=S(), wi=s.cur, w=t.weeks[wi], day=todayIdx(), total=t.weeks.length;
+  const ag=agenda(), mins=ag.reduce((a,b)=>a+b.m,0);
+  const bask=state.basket[state.tab]||[];
+  const other = state.tab==="phonics" ? "spelling" : "phonics";
+  const unit = t.weeks.map((x,i)=>i).filter(i=>t.weeks[i].unit===w.unit);
+  const uDone = unit.filter(i=>(s.d[i]||[]).filter(Boolean).length===5).length;
+  const uPct = Math.round(((unit.indexOf(wi) + daysFor(wi).filter(Boolean).length/5) / unit.length) * 100);
+
+  let h = `<header class="hello"><span class="av">${esc((nm()[0]||"?").toUpperCase())}</span>
+    <div class="who"><b>Hello, ${esc(nm())}</b><button class="linkbtn" id="switchKid">Switch to ${esc(state.names[other])}</button></div>
+    <button class="iconbtn" data-view="week" aria-label="Week plan and settings">${svg('<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/>')}</button></header>`;
+
+  h += `<section class="unitcard"><span>Week ${wi+1} of ${total} · ${esc(TRACKS[state.tab].who)}</span>
+    <h2>${esc(w.unit)}</h2><div class="ubar" role="progressbar" aria-label="Progress through this unit" aria-valuenow="${uPct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${uPct}%"></i></div>
+    <span>${uDone} of ${unit.length} week${unit.length===1?"":"s"} done this unit</span></section>`;
+
+  h += `<nav class="hub" aria-label="More">${HUB.map(([k,l,c,p])=>`<button data-view="${k}"><span class="ico ${c}">${svg(p)}</span>${l}</button>`).join("")}</nav>`;
+
   if (day<0){
-    h+=`<h2>Week ${wi+1} is complete</h2><p class="muted">Lovely work. Repeat any day that felt hard, or move on when it feels easy.</p>
-      <button class="btn wide" id="nextWeek" ${wi===total-1?"disabled":""}>Start week ${wi+2}</button>`;
+    h += `<section class="box"><h2>Week ${wi+1} is complete</h2><p class="muted">Lovely work. Repeat any lesson that felt hard, or move on when it feels easy.</p>
+      <button class="btn wide" id="nextWeek" ${wi===total-1?"disabled":""}>Start week ${wi+2}</button></section>`;
   } else {
-    h+=`<p class="muted" style="margin:0">Week ${wi+1}, day ${day+1}: ${esc(w.t)}</p>
-      <h2>Today's class with ${esc(nm())}</h2>
+    h += `<section class="box classcard"><div class="cardhead"><h2>Today's class</h2><span class="muted">Lesson ${day+1}: ${esc(w.t)}</span></div>
       <p class="enc">${esc(ENCOURAGE[Math.floor(Date.now()/864e5)%ENCOURAGE.length])}</p>
       <div class="modes" role="group" aria-label="Class length">
-        <button data-mode="full" aria-pressed="${state.mode==="full"}">Full class</button>
+        <button data-mode="full" aria-pressed="${state.mode==="full"}">Full</button>
         <button data-mode="tired" aria-pressed="${state.mode==="tired"}">Tired day</button>
-        <button data-mode="minimum" aria-pressed="${state.mode==="minimum"}">Minimum day</button>
+        <button data-mode="minimum" aria-pressed="${state.mode==="minimum"}">Minimum</button>
       </div>
       ${state.mode==="minimum"?`<p class="muted" style="margin:0">Just Morning Time and a story. Today's lesson waits for next time, and showing up still counts.</p>`:""}
-      <ul class="agenda">${ag.map(a=>`<li><span class="ico">${icon(a.k)}</span><span class="nm">${a.t}${a.k==="lesson"?`: ${t.days[day][0]}`:a.k==="stem"?`: ${stemFor(state.tab,wi,day).t}`:""}</span><span class="mn">${a.m} min</span></li>`).join("")}</ul>
-      <button class="btn wide" id="startClass">Start class (${mins} min)</button>`;
+      <ul class="agenda">${ag.map(a=>`<li><span class="ico ${TONE[a.k]||"sage"}">${icon(a.k)}</span><span class="nm">${a.t}${a.k==="lesson"?`: ${t.days[day][0]}`:a.k==="stem"?`: ${stemFor(state.tab,wi,day).t}`:""}</span><span class="mn">${a.m} min</span></li>`).join("")}</ul>
+    </section>
+    <button class="btn wide" id="startClass">Start class · ${mins} min</button>`;
   }
-  h+=`<div class="weekdots" style="margin-top:14px">${[1,2,3,4,5].map((x,j)=>`<span><i class="${d[j]?"on":""}"></i>Lesson ${x}</span>`).join("")}</div>
-  <p class="muted" style="margin:8px 0 0;font-size:.88rem">No weekdays to keep up with. Just do the next lesson whenever you can.</p></section>`;
-  if (!state.placed[state.tab] && !Object.keys(s.d).length) h+=`<section class="box"><h2>Not sure where to start?</h2><p class="muted" style="margin:0 0 10px">A 2-minute starting check finds the right week for ${esc(nm())}, so they don't repeat what they already know.</p><button class="btn alt wide" id="openPlace">Take the starting check</button></section>`;
 
-  if (state.intro) h+=`<section class="box start"><h2>New here? Start small.</h2><ol>
+  if (!state.placed[state.tab] && !Object.keys(s.d).length) h += `<section class="box tint-sky"><h2>Not sure where to start?</h2><p class="muted" style="margin:0 0 12px">A 2-minute starting check finds the right week for ${esc(nm())}, so they don't repeat what they already know.</p><button class="btn alt wide" id="openPlace">Take the starting check</button></section>`;
+
+  if (state.intro) h += `<section class="box start tint-butter"><h2>New here? Start small.</h2><ol>
     <li>Pick one time, like right after breakfast, and keep it every day.</li>
     <li>Stop while it's still fun. Short and happy beats long and tearful.</li>
     <li>Missed a day? No catching up. Just press Start and it picks up where you left off.</li></ol>
     <button class="btn alt" id="introOk">Got it</button></section>`;
 
-  h+=`<section class="box"><div class="coachcard"><span class="av"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M9 10h6"/></svg></span>
-    <div style="flex:1"><h2 style="margin:0">Parent coach</h2><p class="muted" style="margin:0">Tears, refusing, can't focus, or you're running on empty? Ask anything.</p></div></div>
-    <button class="btn alt wide" id="openCoach" style="margin-top:12px">Talk to the coach</button></section>`;
+  h += `<section class="box"><h2>${esc(nm())}'s nature basket</h2><p class="muted" style="margin:0">${esc(nm())} picks one stamp at the end of every class. ${bask.length} so far.</p>
+    <div class="basket">${bask.length?bask.map(stampSvg).join(""):'<span class="muted">Empty for now. The first one comes after today\'s class.</span>'}</div></section>
+    <p class="status" id="status">${saveFn?"Progress is saved to your account.":"Progress is saved on this device."}</p>`;
+  return h;
+}
 
-  h+=`<section class="box"><h2>${esc(nm())}'s nature basket</h2><p class="muted" style="margin:0">${esc(nm())} picks one stamp at the end of every class. ${bask.length} so far.</p>
-    <div class="basket">${bask.length?bask.map(stampSvg).join(""):'<span class="muted">Empty for now. The first one comes after today\'s class.</span>'}</div></section>`;
-
-  h+=`<section class="box"><p class="muted" style="margin:0">Week ${wi+1} of ${total}, ${esc(w.unit)}</p><h2>${esc(w.t)}</h2>
-    ${w.s.length?`<div class="sounds">${w.s.map(esc).join("  ")}</div>`:""}
-    <div class="chips">${w.w.map(x=>`<button data-say="${esc(x)}">${esc(x)}</button>`).join("")}</div>
-    ${w.h?`<p class="muted" style="margin:10px 0 0">${state.tab==="phonics"?"Heart words":"Memory words"}</p><div class="chips h">${w.h.map(x=>`<button data-say="${esc(x)}">${esc(x)}</button>`).join("")}</div>`:""}
-    ${w.tip?`<p style="margin:12px 0 4px">${esc(w.tip)}</p>`:""}
-    ${weekPrintsHtml(state.tab,wi)}
-    <div class="storyline"><span class="ico">${icon("story")}</span><span style="flex:1"><small class="muted">This week's story${state.stories[skey()]?" (your own)":""}</small><br>${esc(storyFor().title)}</span><button class="btn alt" id="editStory">${state.stories[skey()]?"Edit":"Add your own"}</button></div>
-    <div style="margin-top:10px">${t.days.map(([a],j)=>`<div class="dayrow"><input type="checkbox" id="d${j}" ${d[j]?"checked":""}><label for="d${j}">Day ${j+1}: ${a}<small>${stemFor(state.tab,wi,j).t}</small></label></div>`).join("")}</div>
-    <label class="f" for="note">Notes for this week</label><textarea id="note" placeholder="What clicked, what to repeat…">${esc(s.n[wi]||"")}</textarea>
-    <div style="display:flex;gap:8px;margin-top:12px"><button class="btn alt" style="flex:1" id="pw" ${wi===0?"disabled":""}>Previous week</button><button class="btn alt" style="flex:1" id="nw" ${wi===total-1?"disabled":""}>Next week</button></div>
-  </section>`;
-
-  h+=`<section class="box"><details><summary>Full year plan (${done} of ${total} weeks done)</summary>`;
-  let idx=0;
-  for (const [u,ws] of t.units){ h+=`<h3>${esc(u)}</h3><ul class="list">`;
-    for (const wk of ws){ const dd=daysFor(idx); h+=`<li><button data-week="${idx}" ${idx===wi?'aria-current="true"':""}><span class="n">Wk ${idx+1}</span><span class="t">${esc(wk.t)}</span><span class="dots">${[0,1,2,3,4].map(j=>`<i class="${dd[j]?"on":""}"></i>`).join("")}</span></button></li>`; idx++; }
-    h+=`</ul>`; }
-  h+=`</details></section>`;
-
-  h+=`<section class="box"><details><summary>Settings</summary>
-    <label class="f" for="n1">Younger child's name</label><input type="text" id="n1" value="${esc(state.names.phonics)}">
-    <label class="f" for="n2">Older child's name</label><input type="text" id="n2" value="${esc(state.names.spelling)}">
-    <button class="btn alt wide" id="replace" style="margin-top:12px">Retake the starting check for ${esc(nm())}</button>
-    <label class="f" for="pr">Opening prayer</label><textarea id="pr">${esc(state.prayer)}</textarea>
-  </details></section><p class="status" id="status">${saveFn?"Progress is saved to your account.":"Progress is saved on this device."}</p>`;
-
-  $("app").innerHTML=h;
-  document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{ state.tab=b.dataset.tab; save(); render(); });
-  bindView();
+function bindToday(){
+  const s=S(), wi=s.cur;
+  $("switchKid").onclick=()=>{ state.tab = state.tab==="phonics" ? "spelling" : "phonics"; save(); render(); };
   document.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{ state.mode=b.dataset.mode; save(); render(); });
-  document.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>say(b.dataset.say.replace("/"," and "),.8));
-  document.querySelectorAll("[data-week]").forEach(b=>b.onclick=()=>{ s.cur=+b.dataset.week; save(); render(); window.scrollTo({top:0,behavior:"smooth"}); });
-  t.days.forEach((_,j)=>$("d"+j).onchange=e=>{ const a=[...daysFor(wi)]; a[j]=e.target.checked?1:0; s.d[wi]=a; save(); render(); });
-  $("note").oninput=e=>{ s.n[wi]=e.target.value; save(); };
-  $("pw").onclick=()=>{ s.cur=wi-1; save(); render(); };
-  $("nw").onclick=()=>{ s.cur=wi+1; save(); render(); };
   if ($("nextWeek")) $("nextWeek").onclick=()=>{ s.cur=wi+1; save(); render(); };
   if ($("startClass")) $("startClass").onclick=openClass;
   if ($("openPlace")) $("openPlace").onclick=openPlacement;
   if ($("introOk")) $("introOk").onclick=()=>{ state.intro=false; save(); render(); };
-  $("openCoach").onclick=()=>openCoach();
+}
+
+function weekHtml(){
+  const t=T(), s=S(), wi=s.cur, w=t.weeks[wi], day=todayIdx(), total=t.weeks.length, done=doneCount(state.tab);
+  const d=daysFor(wi);
+  let h = `<header class="pagehead arc"><p class="kicker">Week ${wi+1} of ${total}, ${esc(nm())}</p><h1>Pick up where<br>you left off</h1>
+    <div class="kids" role="tablist" aria-label="Child">${["phonics","spelling"].map(k=>`<button role="tab" data-tab="${k}" aria-selected="${state.tab===k}">${esc(state.names[k])}</button>`).join("")}</div></header>`;
+
+  h += `<div class="cardhead"><b>${esc(w.t)}</b><span class="muted">${d.filter(Boolean).length} of 5 lessons</span></div>
+    <div class="days">${t.days.map(([a],j)=>{
+      const k=DAYKEY[j]||"lesson", now=j===day;
+      const end = d[j] ? `<button class="tick on" data-tick="${j}" aria-pressed="true" aria-label="Lesson ${j+1} done. Tap to undo">${svg(CHECK)}</button>`
+        : now ? `<button class="btn sm" id="startClass">Start</button>`
+        : `<button class="tick" data-tick="${j}" aria-pressed="false" aria-label="Mark lesson ${j+1} done"></button>`;
+      return `<div class="daycard${now?" now":""}"><span class="ico lg ${TONE[k]}">${icon(k)}</span><div class="dtxt"><small>Lesson ${j+1}</small><b>${a}</b><span>${esc(stemFor(state.tab,wi,j).t)}</span></div>${end}</div>`;
+    }).join("")}</div>
+    <p class="muted" style="margin:6px 4px 18px;font-size:.88rem">No weekdays to keep up with. Just do the next lesson whenever you can.</p>`;
+
+  h += `<section class="box"><p class="muted" style="margin:0">${esc(w.unit)}</p><h2>This week's words</h2>
+    ${w.s.length?`<div class="sounds">${w.s.map(esc).join("  ")}</div>`:""}
+    <div class="chips">${w.w.map(x=>`<button data-say="${esc(x)}">${esc(x)}</button>`).join("")}</div>
+    ${w.h?`<p class="muted" style="margin:10px 0 0">${state.tab==="phonics"?"Heart words":"Memory words"}</p><div class="chips h">${w.h.map(x=>`<button data-say="${esc(x)}">${esc(x)}</button>`).join("")}</div>`:""}
+    ${w.tip?`<p class="enc" style="margin-top:12px">${esc(w.tip)}</p>`:""}
+    ${weekPrintsHtml(state.tab,wi)}
+    <div class="storyline"><span class="ico butter">${icon("story")}</span><span style="flex:1"><small class="muted">This week's story${state.stories[skey()]?" (your own)":""}</small><br>${esc(storyFor().title)}</span><button class="btn alt sm" id="editStory">${state.stories[skey()]?"Edit":"Add your own"}</button></div>
+    <label class="f" for="note">Notes for this week</label><textarea id="note" placeholder="What clicked, what to repeat…">${esc(s.n[wi]||"")}</textarea>
+    <div style="display:flex;gap:8px;margin-top:12px"><button class="btn alt" style="flex:1" id="pw" ${wi===0?"disabled":""}>Previous week</button><button class="btn alt" style="flex:1" id="nw" ${wi===total-1?"disabled":""}>Next week</button></div>
+  </section>`;
+
+  h += `<section class="box"><details><summary>Full year plan (${done} of ${total} weeks done)</summary>`;
+  let idx=0;
+  for (const [u,ws] of t.units){ h+=`<h3>${esc(u)}</h3><ul class="list">`;
+    for (const wk of ws){ const dd=daysFor(idx); h+=`<li><button data-week="${idx}" ${idx===wi?'aria-current="true"':""}><span class="n">Wk ${idx+1}</span><span class="t">${esc(wk.t)}</span><span class="dots">${[0,1,2,3,4].map(j=>`<i class="${dd[j]?"on":""}"></i>`).join("")}</span></button></li>`; idx++; }
+    h+=`</ul>`; }
+  h += `</details></section>`;
+
+  h += `<section class="box"><details><summary>Settings</summary>
+    <label class="f" for="n1">Younger child's name</label><input type="text" id="n1" value="${esc(state.names.phonics)}">
+    <label class="f" for="n2">Older child's name</label><input type="text" id="n2" value="${esc(state.names.spelling)}">
+    <button class="btn alt wide" id="replace" style="margin-top:12px">Retake the starting check for ${esc(nm())}</button>
+    <label class="f" for="pr">Opening prayer</label><textarea id="pr">${esc(state.prayer)}</textarea>
+  </details></section>`;
+  return h;
+}
+
+function bindWeek(){
+  const s=S(), wi=s.cur;
+  document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{ state.tab=b.dataset.tab; save(); render(); });
+  document.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>say(b.dataset.say.replace("/"," and "),.8));
+  document.querySelectorAll("[data-week]").forEach(b=>b.onclick=()=>{ s.cur=+b.dataset.week; save(); render(); window.scrollTo({top:0,behavior:"smooth"}); });
+  document.querySelectorAll("[data-tick]").forEach(b=>b.onclick=()=>{ const j=+b.dataset.tick, a=[...daysFor(wi)]; a[j]=a[j]?0:1; s.d[wi]=a; save(); render(); });
+  if ($("startClass")) $("startClass").onclick=openClass;
+  $("note").oninput=e=>{ s.n[wi]=e.target.value; save(); };
+  $("pw").onclick=()=>{ s.cur=wi-1; save(); render(); };
+  $("nw").onclick=()=>{ s.cur=wi+1; save(); render(); };
   $("editStory").onclick=()=>openStoryEditor();
   $("n1").onchange=e=>{ state.names.phonics=e.target.value.trim()||"Little one"; save(); render(); };
   $("n2").onchange=e=>{ state.names.spelling=e.target.value.trim()||"Big kid"; save(); render(); };

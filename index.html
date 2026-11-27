@@ -3,341 +3,472 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Reading Path</title>
-<meta name="description" content="One calm homeschool class a day: phonics, spelling, nature study and support for tired moms.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap" rel="stylesheet">
+<title>Reading Path · One calm homeschool class a day</title>
+<meta name="description" content="Phonics, spelling, nature study and support for tired moms, laid out one short class at a time.">
+<script>if (/access_token|error_description/.test(location.hash) || /[?&]code=/.test(location.search)) location.replace("/app/" + location.search + location.hash);</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#EFEBE3; --card:#FAF8F4; --ink:#3B352E; --soft:#776E63; --edge:#DDD5C7;
-  --sage:#6E7F5E; --sage-bg:#E2E6D8; --blue:#647A88; --blue-bg:#E1E7EA; --wood:#B89B74; --wood-bg:#EDE3D3;
-  --marker:var(--sage); --marker-bg:var(--sage-bg); --pen:var(--blue); --pen-bg:var(--blue-bg);
-  --green:var(--sage); --paper:var(--bg); --line:#E3DCCF; --sand:#E6D6B8;
-  box-sizing:border-box;
-  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  --cream:#FBFAEC; --arc:#DCE3C8; --green:#2F4A35; --on-green:#FFFFFF; --band:#2F4A35; --ink:#2B3A2E; --soft:#55624F; --card:#FFFEF8; --edge:#E3E5D2;
+  --peach:#C9805F; --butter:#B8902F; --sage:#6F9460; --sky:#5F95A3;
+  --peachbg:#F7E2D5; --butterbg:#F8EDCB; --sagebg:#E4ECD8; --skybg:#DDECEF;
+  --u:min(1px, 100vw/1440);
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#211F1B; --card:#2B2823; --ink:#ECE6DB; --soft:#ADA394; --edge:#3D3932;
-    --sage:#A5B490; --sage-bg:#353B2E; --blue:#9BB0BD; --blue-bg:#2D363B; --wood:#CDB28C; --wood-bg:#3A3229;
-    --line:#35312B; --sand:#4A402F;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#211F1B; --card:#2B2823; --ink:#ECE6DB; --soft:#ADA394; --edge:#3D3932;
-  --sage:#A5B490; --sage-bg:#353B2E; --blue:#9BB0BD; --blue-bg:#2D363B; --wood:#CDB28C; --wood-bg:#3A3229;
-  --line:#35312B; --sand:#4A402F;
-}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --cream:#1E2320; --arc:#2A332B; --ink:#ECEBDD; --soft:#B6BFAF; --card:#252B26; --edge:#37413A; --green:#9CC08A; --on-green:#17201A; --band:#24382A; --peachbg:#3A2D25; --butterbg:#383121; --sagebg:#2C3628; --skybg:#24353A; } }
+:root[data-theme="dark"]{ --cream:#1E2320; --arc:#2A332B; --ink:#ECEBDD; --soft:#B6BFAF; --card:#252B26; --edge:#37413A; --green:#9CC08A; --on-green:#17201A; --band:#24382A; --peachbg:#3A2D25; --butterbg:#383121; --sagebg:#2C3628; --skybg:#24353A; }
+html{scroll-padding-top:env(safe-area-inset-top,0px); scroll-behavior:smooth}
 *,*::before,*::after{box-sizing:border-box}
-body{margin:0; background:var(--bg); color:var(--ink); font-family:"Andika","Trebuchet MS",system-ui,sans-serif; font-size:17px; line-height:1.5}
-body.locked{overflow:hidden}
-.wrap{max-width:640px; margin:0 auto; padding:18px 18px 64px}
-button{font:inherit; color:inherit; cursor:pointer}
-:focus-visible{outline:3px solid var(--blue); outline-offset:2px; border-radius:8px}
-h1{font-size:1.9rem; line-height:1.15; margin:10px 0 2px; font-weight:700}
-.sub{color:var(--soft); margin:0 0 16px}
-.box{background:var(--card); border:1px solid var(--edge); border-radius:20px; padding:18px; margin-bottom:16px}
-.box h2{font-size:1.25rem; margin:0 0 6px; line-height:1.25}
-.muted{color:var(--soft); font-size:.95rem}
-.btn{border:0; border-radius:14px; padding:13px 18px; background:var(--sage); color:#fff; font-weight:700; font-size:1.05rem}
-.btn.alt{background:transparent; color:var(--ink); border:1px solid var(--edge); font-weight:400}
-.btn.wide{width:100%}
-.btn:disabled{opacity:.4; cursor:default}
-.tabs{display:flex; gap:8px; margin-bottom:16px}
-.tab{flex:1; text-align:left; border:1px solid var(--edge); background:transparent; border-radius:16px; padding:10px 14px}
-.tab b{display:block}
-.tab span{font-size:.85rem; color:var(--soft)}
-.tab[aria-selected="true"]{background:var(--card); border-color:var(--sage); box-shadow:inset 0 0 0 1px var(--sage)}
+body{margin:0; background:var(--cream); color:var(--ink); font-family:"Andika","Trebuchet MS",system-ui,sans-serif; font-size:18px; line-height:1.55; overflow-x:hidden}
+a{color:inherit}
+.os{font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; letter-spacing:.02em; font-weight:500}
+:focus-visible{outline:3px solid var(--sky); outline-offset:3px; border-radius:8px}
 
-.agenda{list-style:none; padding:0; margin:14px 0}
-.agenda li{display:flex; align-items:center; gap:12px; padding:7px 0}
-.agenda li+li{border-top:1px solid var(--edge)}
-.agenda .ico{width:34px; height:34px; border-radius:50%; background:var(--wood-bg); display:grid; place-items:center; flex:none}
-.agenda .ico svg{width:18px; height:18px; stroke:var(--ink); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round}
-.agenda .nm{flex:1}
-.agenda .mn{color:var(--soft); font-size:.9rem}
-.modes{display:flex; gap:6px; background:var(--bg); padding:4px; border-radius:14px; margin:12px 0}
-.modes button{flex:1; border:0; background:transparent; border-radius:11px; padding:8px 6px; font-size:.95rem}
-.modes button[aria-pressed="true"]{background:var(--card); box-shadow:0 0 0 1px var(--edge); font-weight:700}
-.weekdots{display:flex; gap:6px; margin:4px 0 0}
-.weekdots span{flex:1; text-align:center; font-size:.8rem; color:var(--soft)}
-.weekdots i{display:block; height:8px; border-radius:9px; background:var(--edge); margin-bottom:4px}
-.weekdots i.on{background:var(--sage)}
+/* nav */
+.nav{position:fixed; z-index:30; top:0; left:0; right:0; display:flex; align-items:center; gap:24px; padding:calc(14px + env(safe-area-inset-top,0px)) clamp(16px,3vw,40px) 12px; transition:background .4s, box-shadow .4s}
+.nav.solid{background:color-mix(in srgb, var(--cream) 88%, transparent); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); box-shadow:0 1px 0 var(--edge)}
+.logo{font-family:"Oswald",sans-serif; font-weight:600; font-size:22px; letter-spacing:.03em; text-decoration:none; white-space:nowrap}
+.logo span:nth-child(4n+1){color:var(--peach)} .logo span:nth-child(4n+2){color:var(--butter)} .logo span:nth-child(4n+3){color:var(--sage)} .logo span:nth-child(4n){color:var(--sky)}
+.links{display:flex; gap:clamp(16px,3vw,40px); margin:0 auto; background:rgba(255,255,255,.45); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border-radius:99px; padding:10px 26px}
+.links a{text-decoration:none; font-size:16px; color:#2B3A2E}
+.links a:hover{text-decoration:underline; text-underline-offset:4px}
+.pill{display:inline-flex; align-items:center; gap:10px; border:0; border-radius:99px; padding:12px 22px; background:var(--green); color:var(--on-green); text-decoration:none; font-weight:700; font-size:16px; transition:transform .25s}
+.pill:hover{transform:translateY(-2px)}
+.pill.light{background:#fff; color:#2F4A35}
+.pill.ghost{background:rgba(47,74,53,.42); color:#fff; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.7)}
+.nav .pill{padding:10px 18px}
 
-.start ol{padding-left:1.3em; margin:8px 0 12px}
-.start li{margin-bottom:6px}
-.coachcard{display:flex; gap:14px; align-items:center}
-.coachcard .av{width:48px; height:48px; border-radius:50%; background:var(--blue-bg); display:grid; place-items:center; flex:none}
-.coachcard .av svg{width:26px; height:26px; stroke:var(--blue); fill:none; stroke-width:1.8; stroke-linecap:round}
-.basket{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; min-height:40px}
-.basket svg{width:32px; height:32px}
-.dayrow{display:flex; gap:12px; align-items:center; padding:8px 0}
-.dayrow+.dayrow{border-top:1px solid var(--edge)}
-.dayrow input{appearance:none; flex:none; width:24px; height:24px; border:1.5px solid var(--soft); border-radius:7px; display:grid; place-content:center; background:var(--card); cursor:pointer}
-.dayrow input:checked{background:var(--sage); border-color:var(--sage)}
-.dayrow input:checked::after{content:""; width:11px; height:6px; border:2.5px solid #fff; border-top:0; border-right:0; transform:rotate(-45deg) translate(1px,-1px)}
-.dayrow label{flex:1; cursor:pointer}
-.dayrow small{display:block; color:var(--soft)}
-.chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px}
-.chips button{border:0; background:var(--blue-bg); color:var(--ink); border-radius:10px; padding:3px 10px; font-size:1.05rem}
-.chips.h button{background:var(--wood-bg)}
-.sounds{font-size:2.2rem; font-weight:700; letter-spacing:.06em; margin:2px 0}
-textarea,input[type=text]{width:100%; font:inherit; font-size:.95rem; color:var(--ink); background:var(--bg); border:1px solid var(--edge); border-radius:12px; padding:9px 11px}
-textarea{min-height:64px; resize:vertical}
-details summary{cursor:pointer; padding:4px 0; font-weight:700}
-.list{list-style:none; padding:0; margin:0}
-.list button{width:100%; display:flex; align-items:center; gap:10px; text-align:left; background:transparent; border:0; border-radius:10px; padding:6px 8px; min-height:42px}
-.list button[aria-current="true"]{background:var(--sage-bg)}
-.list .n{width:2.6em; color:var(--soft); font-size:.88rem; flex:none}
-.list .t{flex:1}
-.dots{display:flex; gap:3px}
-.dots i{width:7px; height:7px; border-radius:50%; background:var(--edge)}
-.dots i.on{background:var(--sage)}
-h3{font-size:1rem; margin:18px 0 4px; color:var(--soft)}
-.status{font-size:.85rem; color:var(--soft); margin-top:20px}
-label.f{display:block; margin:10px 0 4px; font-size:.9rem; color:var(--soft)}
+/* hero scene */
+.hero{position:relative; min-height:100svh; overflow:hidden; display:grid; place-items:start center; background:linear-gradient(180deg,#7FB3D0 0%,#A9CDE0 38%,#D9E8E3 62%,#E9EED2 100%)}
+.scene{position:absolute; inset:0; width:100%; height:100%}
+.cloud{animation:drift linear infinite}
+.c1{animation-duration:90s} .c2{animation-duration:130s; animation-delay:-40s} .c3{animation-duration:110s; animation-delay:-80s}
+@keyframes drift{from{transform:translateX(-30%)} to{transform:translateX(130%)}}
+.sway{transform-box:fill-box; transform-origin:50% 100%; animation:sway 4.5s ease-in-out infinite}
+.sway.b{animation-duration:5.5s; animation-delay:-1.2s} .sway.c{animation-duration:3.8s; animation-delay:-2.4s}
+@keyframes sway{0%,100%{transform:rotate(-3deg)} 50%{transform:rotate(3deg)}}
+.leafs{transform-box:fill-box; transform-origin:50% 90%; animation:rustle 6s ease-in-out infinite}
+@keyframes rustle{0%,100%{transform:rotate(-.6deg)} 50%{transform:rotate(.8deg)}}
+.copy{position:relative; z-index:2; text-align:center; padding:calc(120px + env(safe-area-inset-top,0px)) 20px 0; max-width:900px; color:#fff}
+.kicker{font-size:clamp(16px,1.6vw,22px); letter-spacing:.14em; opacity:.95; margin:0 0 10px}
+.copy h1{margin:0; font-family:"Oswald",sans-serif; font-weight:600; text-transform:uppercase; font-size:clamp(46px,8.4vw,124px); line-height:.98; letter-spacing:.01em; text-shadow:0 2px 4px rgba(28,70,120,.25), 0 4px 26px rgba(28,70,120,.45)}
+.copy h1 .l{display:block}
+.copy p.sub{font-size:clamp(17px,1.5vw,21px); max-width:560px; margin:22px auto 26px; text-shadow:0 1px 3px rgba(28,70,120,.35), 0 1px 12px rgba(28,70,120,.45)}
+.ctas{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
+.signup{max-width:480px; margin:0 auto 16px; background:var(--card); color:var(--ink); border-radius:24px; padding:16px; text-align:left; box-shadow:0 12px 40px rgba(28,70,120,.18)}
+.signup label{display:block; font-weight:700; font-size:15px; margin:0 0 8px 4px}
+.signup .row{display:flex; gap:8px}
+.signup input{flex:1; min-width:0; font:inherit; font-size:16px; color:var(--ink); background:var(--cream); border:1.5px solid var(--edge); border-radius:99px; padding:11px 16px}
+.signup small{display:block; margin:10px 4px 0; font-size:13.5px; color:var(--soft); line-height:1.45}
+@media (max-width:520px) and (orientation:portrait){ .hero{min-height:max(100svh,1120px)} }
+@media (max-width:520px){ .signup .row{flex-direction:column} .signup .pill{justify-content:center} }
 
-/* sheets */
-.sheet{position:fixed; inset:0; z-index:10; background:rgba(30,26,20,.45); display:none; align-items:flex-end; justify-content:center}
-.sheet.open{display:flex}
-.panel{background:var(--card); width:100%; max-width:640px; height:100%; overflow:auto; padding:14px 18px calc(18px + env(safe-area-inset-bottom,0px)); display:flex; flex-direction:column}
-@media (min-width:700px){ .sheet{align-items:center} .panel{height:auto; max-height:94vh; border-radius:22px} }
-.ptop{display:flex; align-items:center; gap:10px; padding-top:env(safe-area-inset-top,0px)}
-.x{border:0; background:var(--bg); width:40px; height:40px; border-radius:50%; font-size:1.3rem; line-height:1; flex:none}
-.segs{display:flex; gap:4px; flex:1}
-.segs i{flex:1; height:6px; border-radius:9px; background:var(--edge)}
-.segs i.on{background:var(--sage)}
-.segname{color:var(--soft); font-size:.9rem; margin:12px 0 0}
-.body{flex:1; padding:6px 0 14px}
-.body h2{font-size:1.5rem; margin:2px 0 10px; line-height:1.2}
-.foot{display:flex; gap:8px; position:sticky; bottom:0; background:var(--card); padding-top:10px}
-.foot .btn{flex:2}
-.foot .btn.alt{flex:1}
-.pause{border:0; background:none; color:var(--soft); text-decoration:underline; text-underline-offset:3px; padding:8px 0; width:100%}
-.lyrics{font-size:1.35rem; line-height:1.6; margin:10px 0}
-.lyrics p{margin:0}
-.prayer{font-size:1.4rem; line-height:1.6; margin:14px 0}
-.ring{display:grid; place-items:center; margin:14px auto; width:190px; height:190px; position:relative}
-.ring svg{position:absolute; inset:0; transform:rotate(-90deg)}
-.ring b{font-size:2.4rem; font-variant-numeric:tabular-nums}
-.tline{display:flex; gap:8px; justify-content:center}
-.idea{background:var(--bg); border-radius:16px; padding:16px; font-size:1.2rem; margin:8px 0}
-.kind{display:inline-block; background:var(--sage-bg); border-radius:99px; padding:2px 12px; font-size:.9rem}
-.mat{padding-left:1.2em; margin:6px 0}
-.calm{width:150px; height:150px; border-radius:50%; background:var(--sage-bg); margin:20px auto; display:grid; place-items:center; animation:breathe 8s ease-in-out infinite}
-.calm span{font-size:1.1rem}
-@keyframes breathe{0%,100%{transform:scale(.75)} 50%{transform:scale(1.05)}}
-.stamps{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:14px 0}
-.stamps button{background:var(--bg); border:1px solid var(--edge); border-radius:16px; padding:12px 4px; display:grid; place-items:center; gap:4px; font-size:.9rem}
-.stamps svg{width:48px; height:48px}
-.stamps button[aria-pressed="true"]{border-color:var(--sage); box-shadow:inset 0 0 0 2px var(--sage)}
+/* sections */
+section.band{position:relative; padding:clamp(70px,10vw,130px) clamp(20px,5vw,60px)}
+.wrap{max-width:1120px; margin:0 auto}
+.num{font-family:"Oswald",sans-serif; font-weight:500; font-size:clamp(70px,10vw,150px); line-height:.8; color:var(--arc)}
+h2.t{font-family:"Oswald",sans-serif; font-weight:600; text-transform:uppercase; font-size:clamp(34px,4.6vw,64px); line-height:1.02; margin:6px 0 14px; letter-spacing:.01em}
+p.lead{font-size:clamp(17px,1.4vw,20px); color:var(--soft); max-width:560px; margin:0}
+.split{display:grid; grid-template-columns:1fr 1.1fr; gap:clamp(30px,5vw,70px); align-items:center}
+.reveal{opacity:0; transform:translateY(30px); transition:opacity .9s ease, transform 1s cubic-bezier(.2,.8,.2,1)}
+.in .reveal{opacity:1; transform:none} .in .d1{transition-delay:.1s} .in .d2{transition-delay:.2s} .in .d3{transition-delay:.3s}
 
-/* coach chat */
-.chat{flex:1; display:flex; flex-direction:column; gap:10px; padding:10px 0}
-.msg{max-width:88%; padding:10px 14px; border-radius:16px; white-space:pre-wrap}
-.msg.me{align-self:flex-end; background:var(--sage-bg); border-bottom-right-radius:4px}
-.msg.ai{align-self:flex-start; background:var(--bg); border-bottom-left-radius:4px}
-.quick{display:flex; flex-wrap:wrap; gap:6px}
-.quick button{border:1px solid var(--edge); background:var(--card); border-radius:99px; padding:6px 12px; font-size:.92rem}
-.ask{display:flex; gap:8px; position:sticky; bottom:0; background:var(--card); padding-top:8px}
-.ask textarea{min-height:46px; flex:1}
-.disc{font-size:.8rem; color:var(--soft); margin:6px 0 0}
+.agenda{list-style:none; margin:0; padding:0; display:grid; gap:10px}
+.agenda li{display:flex; align-items:center; gap:14px; background:var(--card); border:1.5px solid var(--edge); border-radius:20px; padding:12px 16px}
+.agenda .dot{width:44px; height:44px; border-radius:50%; display:grid; place-items:center; flex:none}
+.agenda .dot svg{width:22px; height:22px; fill:none; stroke:var(--ink); stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round}
+.agenda b{display:block}
+.agenda small{color:var(--soft); font-size:15px}
+.agenda .min{margin-left:auto; color:var(--soft); font-size:15px; white-space:nowrap}
 
-/* lesson demo stage */
-.stage{position:relative; aspect-ratio:16/11; border-radius:18px; overflow:hidden; display:grid; place-items:center; text-align:center; padding:12px; background:var(--bg); border:1px solid var(--edge)}
-.scene{display:flex; flex-direction:column; align-items:center; gap:12px; width:100%}
-.cap{min-height:3.2em; margin:10px 2px 6px; font-size:1.05rem}
-.progress{display:flex; gap:4px; margin:8px 0 2px}
-.progress i{flex:1; height:4px; border-radius:9px; background:var(--edge)}
-.progress i.on{background:var(--sage)}
-.controls{display:flex; gap:8px}
-.controls button{border:1px solid var(--edge); background:var(--card); border-radius:12px; padding:9px 0; flex:1}
-.controls .play{flex:2; background:var(--ink); color:var(--card); border-color:var(--ink); font-weight:700}
-.steps{padding-left:1.4em; margin:6px 0 0}
-.steps li{margin:0 0 8px}
-.steps li.now{font-weight:700}
-.mine{margin-top:12px}
-.mine video{width:100%; border-radius:12px; background:#000; margin-bottom:8px}
-.upl{display:inline-flex; border:1px solid var(--edge); border-radius:99px; padding:6px 14px; cursor:pointer; font-size:.92rem}
-.upl input{position:absolute; opacity:0; width:1px; height:1px}
-.big{font-size:clamp(4.5rem,20vw,8rem); line-height:1; color:var(--ink); font-weight:700}
-.big svg{color:var(--blue)}
-.snd{font-size:clamp(1.6rem,6vw,2.4rem); color:var(--blue)}
-.tiles{display:flex; gap:8px; justify-content:center; flex-wrap:wrap}
-.tl{font-size:clamp(1.8rem,8vw,3rem); line-height:1.2; background:var(--card); border:1.5px solid var(--edge); border-radius:12px; padding:4px 12px; min-width:1.5em; color:var(--ink)}
-.tl.silent{opacity:.45}
-.word{font-size:clamp(2.2rem,10vw,3.6rem); color:var(--ink); display:inline-block; line-height:1.2}
-.word em{font-style:normal; color:var(--sage); text-decoration:underline; text-decoration-thickness:3px; text-underline-offset:6px}
-.hand{color:var(--blue)}
-.sweep{display:block; height:5px; border-radius:9px; background:var(--sage); width:100%; transform-origin:left; animation:sweep 1.4s ease-in-out both; animation-delay:var(--d,0s)}
-.row{display:flex; gap:14px; justify-content:center; flex-wrap:wrap; align-items:center}
-.coin{min-width:54px; height:54px; padding:0 8px; border-radius:99px; display:grid; place-items:center; font-size:1.3rem; font-weight:700; background:var(--sage-bg); color:var(--ink)}
-.card{background:var(--card); border:1.5px solid var(--edge); border-radius:12px; padding:8px 14px; font-size:clamp(1.4rem,6vw,2.2rem)}
-.card.red{border-color:var(--wood); background:var(--wood-bg)}
-.chip{background:var(--blue-bg); border-radius:10px; padding:2px 10px; font-size:1.3rem}
-.tray{background:var(--sand); border-radius:14px; padding:6px 30px; box-shadow:inset 0 3px 8px rgba(0,0,0,.12)}
-.tray svg{width:150px; height:120px}
-.trace text{fill:transparent; stroke:var(--ink); stroke-width:2.5; stroke-dasharray:900; stroke-dashoffset:900; animation:trace 2.4s ease-in-out both, fillin .6s both; animation-delay:var(--d,0s), calc(var(--d,0s) + 2.4s)}
-.paper{background:var(--card); border-radius:10px; padding:8px 18px; width:min(92%,420px); text-align:left; background-image:repeating-linear-gradient(to bottom, transparent 0 39px, var(--line) 39px 41px)}
-.paper .ln{font-size:1.7rem; line-height:40px; min-height:40px; display:flex; gap:10px; align-items:center}
-.ok{color:var(--sage); font-weight:700}
-.no{color:var(--wood); font-weight:700}
-.coverbox{position:relative; display:inline-block; padding:4px 14px}
-.coverbox .lid{position:absolute; inset:0; background:var(--blue); border-radius:10px; animation:cover .6s both; animation-delay:var(--d,0s)}
-.pile{border:1.5px dashed var(--wood); border-radius:12px; padding:10px 16px; font-size:1rem}
-.pop{animation:pop .45s cubic-bezier(.3,1.4,.6,1) both; animation-delay:var(--d,0s)}
-.fade{animation:fade .5s both; animation-delay:var(--d,0s)}
-.hi{animation:pop .45s both, hi .5s both; animation-delay:var(--d,0s), var(--h,0s)}
-.settle{animation:settle .9s cubic-bezier(.3,1.3,.6,1) both; animation-delay:var(--d,0s)}
-.pulse{animation:pop .45s both, pulse 1.4s 3 ease-in-out; animation-delay:var(--d,0s), calc(var(--d,0s) + .5s)}
-.flip{animation:flip .5s both; animation-delay:var(--d,0s)}
-@keyframes pop{from{transform:scale(.4); opacity:0} to{transform:none; opacity:1}}
-@keyframes fade{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
-@keyframes hi{to{background:var(--sage-bg); border-color:var(--sage); transform:translateY(-6px)}}
-@keyframes sweep{from{transform:scaleX(0)} to{transform:scaleX(1)}}
-@keyframes trace{to{stroke-dashoffset:0}}
-@keyframes fillin{to{fill:var(--ink)}}
-@keyframes settle{from{transform:translate(var(--x),var(--y)) rotate(var(--r)); opacity:.2} to{transform:none; opacity:1}}
-@keyframes pulse{50%{transform:scale(1.12)}}
-@keyframes flip{from{transform:rotateY(90deg); opacity:0} to{transform:none; opacity:1}}
-@keyframes cover{from{transform:translateX(-120%)} to{transform:none}}
+.letters{display:flex; gap:6px; overflow-x:auto; padding:10px 2px 18px; scrollbar-width:thin; scroll-snap-type:x mandatory}
+.letters figure{margin:0; flex:none; width:118px; background:var(--card); border:1.5px solid var(--edge); border-radius:20px; text-align:center; padding:6px 4px 10px; scroll-snap-align:start}
+.letters figcaption{font-size:14px; color:var(--soft)}
+.points{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:28px}
+.points div{background:var(--card); border:1.5px solid var(--edge); border-radius:22px; padding:18px}
+.points b{display:block; font-size:18px; margin-bottom:4px}
+.points span{color:var(--soft); font-size:16px}
 
-.storyline{display:flex; gap:12px; align-items:center; margin:14px 0 4px; padding:10px 12px; background:var(--bg); border-radius:14px}
-.storyline .ico{width:34px; height:34px; border-radius:50%; background:var(--wood-bg); display:grid; place-items:center; flex:none}
-.storyline .ico svg{width:18px; height:18px; stroke:var(--ink); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round}
-.storyline .btn{padding:8px 12px; font-size:.92rem}
-.storybox{background:var(--bg); border-radius:18px; padding:18px 18px 8px; margin-top:10px}
-.storybox img{width:100%; border-radius:12px; margin-bottom:10px}
-.stitle{margin:0 0 6px; color:var(--ink); font-size:1.15rem}
-.stext{font-size:1.45rem; line-height:1.75; margin:0 0 10px}
-.sw{cursor:pointer; border-radius:6px}
-.sw.key{text-decoration:underline; text-decoration-color:var(--sage); text-decoration-thickness:3px; text-underline-offset:6px; font-weight:700}
-.cal{display:grid; grid-template-columns:repeat(7,1fr); gap:6px}
-.cd{background:var(--bg); border-radius:12px; padding:6px 2px; text-align:center; min-height:66px}
-.cd.now{box-shadow:inset 0 0 0 1.5px var(--ink)}
-.cd small{display:block; color:var(--soft); font-size:.72rem}
-.cd b{display:block; font-size:1rem}
-.cd span{display:flex; gap:3px; justify-content:center; min-height:9px; margin-top:3px}
-.cd i,.legend i{width:9px; height:9px; border-radius:50%; display:inline-block}
-.k1{background:var(--sage)} .k2{background:var(--blue)}
-.legend{display:flex; gap:16px; margin-top:10px; font-size:.9rem; color:var(--soft)}
-.legend span{display:flex; align-items:center; gap:6px}
-.kid.spelling .bar2 i, .kid.spelling .ub i{background:var(--blue)}
-.bigstat{font-size:2.2rem; font-weight:700; margin:8px 0 6px; line-height:1}
-.bigstat small{font-size:1rem; color:var(--soft); font-weight:400}
-.bar2{height:10px; background:var(--bg); border-radius:99px; overflow:hidden}
-.bar2 i{display:block; height:100%; background:var(--sage); border-radius:99px}
-.stats{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-top:12px}
-.stats div{background:var(--bg); border-radius:12px; padding:8px 4px; text-align:center}
-.stats b{display:block; font-size:1.3rem}
-.stats span{font-size:.78rem; color:var(--soft)}
-.units{list-style:none; padding:0; margin:0}
-.units li{display:grid; grid-template-columns:1fr 70px 34px; gap:8px; align-items:center; padding:4px 0; font-size:.92rem}
-.units li.cur span:first-child{font-weight:700}
-.ub{height:6px; background:var(--bg); border-radius:9px; overflow:hidden}
-.ub i{display:block; height:100%; background:var(--sage)}
-.note{background:var(--bg); border-radius:12px; padding:8px 12px; margin:6px 0; font-size:.95rem}
+.dark{background:var(--band); color:#F4F2DF}
+.dark .num{color:rgba(244,242,223,.22)} .dark p.lead{color:rgba(244,242,223,.85)}
+.cards{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:34px}
+.card{background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); border-radius:24px; padding:20px}
+.card b{display:block; font-size:19px; margin:10px 0 6px}
+.card span{font-size:16px; color:rgba(244,242,223,.82)}
+.card .ic{width:46px; height:46px; border-radius:50%; background:rgba(255,255,255,.12); display:grid; place-items:center}
+.card .ic svg{width:22px; height:22px; fill:none; stroke:#F4F2DF; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round}
+.affirm{margin-top:26px; font-size:clamp(20px,2vw,28px); font-weight:700; max-width:720px}
 
-.enc{margin:4px 0 2px; padding:10px 14px; background:var(--wood-bg); border-radius:14px; font-size:.95rem; line-height:1.45}
-.modes button{font-size:.9rem}
-.stage .phase{position:absolute; top:10px; left:10px; z-index:1; background:var(--card); border:1px solid var(--edge); border-radius:99px; padding:2px 10px; font-size:.82rem; font-weight:700}
-.errlog{margin-top:14px; border-top:1px solid var(--edge); padding-top:8px}
-.errtypes{display:grid; grid-template-columns:1fr 1fr; gap:6px}
-.errtypes button{text-align:left; border:1px solid var(--edge); background:var(--bg); border-radius:12px; padding:8px 10px; display:grid; gap:2px}
-.errtypes button small{color:var(--soft); font-size:.8rem; line-height:1.3}
-.errtypes button[aria-pressed="true"]{border-color:var(--sage); box-shadow:inset 0 0 0 1.5px var(--sage); background:var(--sage-bg)}
-.faith{background:var(--sage-bg); border-color:transparent}
+.weeks{display:flex; flex-wrap:wrap; gap:8px; margin-top:22px}
+.weeks b{font-family:"Oswald",sans-serif; font-weight:500; color:var(--sage); margin-right:4px}
+.weeks span{background:var(--card); border:1.5px solid var(--edge); border-radius:99px; padding:8px 16px; font-size:16px}
+.bugart{background:var(--skybg); border-radius:32px; aspect-ratio:4/3; position:relative; overflow:hidden}
 
-.mainnav{display:flex; gap:4px; overflow-x:auto; background:var(--card); border:1px solid var(--edge); border-radius:16px; padding:4px; margin:0 0 16px; scrollbar-width:none}
-.mainnav button{flex:1 0 auto; border:0; background:transparent; border-radius:12px; padding:9px 12px; font-size:.92rem; white-space:nowrap; min-height:40px}
-.mainnav button[aria-pressed="true"]{background:var(--sage); color:#fff; font-weight:700}
-.pchips{display:flex; flex-wrap:wrap; gap:6px}
-.pchip{display:inline-flex; flex-direction:column; text-decoration:none; color:var(--ink); background:var(--blue-bg); border-radius:12px; padding:6px 12px; font-size:.95rem}
-.pchip small{color:var(--soft); font-size:.78rem}
-.bughero{background:var(--wood-bg); border-color:transparent}
-.bigidea{font-size:1.15rem; font-weight:700; margin:0 0 10px; padding:10px 14px; background:var(--sage-bg); border-radius:14px}
-.readaloud{font-size:1.1rem; line-height:1.7; margin:0 0 10px}
-.agegrid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:10px 0; font-size:.95rem}
-.agegrid div{background:var(--bg); border-radius:12px; padding:10px}
-.filters{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px}
-.filters button{border:1px solid var(--edge); background:var(--card); border-radius:99px; padding:6px 12px; font-size:.9rem}
-.filters button small{color:var(--soft)}
-.filters button[aria-pressed="true"]{background:var(--sage); border-color:var(--sage); color:#fff}
-.filters button[aria-pressed="true"] small{color:#fff}
-.plist{display:grid; gap:8px}
-.pcard{background:var(--bg); border-radius:14px; padding:10px 12px}
-.pcard a{color:var(--ink); text-decoration:none}
-.pcard a b{text-decoration:underline; text-decoration-color:var(--edge); text-underline-offset:3px}
-.tags{display:flex; flex-wrap:wrap; gap:4px; margin-top:6px}
-.tags span{font-size:.78rem; background:var(--card); border:1px solid var(--edge); border-radius:99px; padding:1px 8px; color:var(--soft)}
-.tags span.use{background:var(--sage-bg); border-color:transparent; color:var(--ink)}
-.lab{display:grid; grid-template-columns:1fr 1fr auto; gap:6px; margin-top:8px}
-.lab select{font:inherit; font-size:.9rem; border:1px solid var(--edge); border-radius:12px; background:var(--card); color:var(--ink); padding:6px}
-.lab .btn{padding:8px 12px}
-.book{display:flex; gap:14px}
-.spine{width:8px; border-radius:8px; flex:none; background:var(--sage)}
-.spine.you{background:var(--wood)}
-a.btn{display:inline-block; text-decoration:none}
-.calmhero{background:var(--blue-bg); border-color:transparent}
-.calm.big2{width:190px; height:190px; animation:none; transition:transform 4s ease-in-out; transform:scale(.7); text-align:center; padding:12px}
-.calm.big2.grow{transform:scale(1.05)}
-.feel{display:grid; grid-template-columns:repeat(4,1fr); gap:6px}
-.feel button{border:1px solid var(--edge); background:var(--bg); border-radius:14px; padding:12px 4px; font-size:.95rem}
-.feel button[aria-pressed="true"]{background:var(--sage-bg); border-color:var(--sage); font-weight:700}
-.pchip{border:0; text-align:left; cursor:pointer}
-.momhero{background:var(--wood-bg); border-color:transparent}
-.affirm{font-size:1.5rem; line-height:1.4; font-weight:700; margin:10px 0 6px}
-.imggrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(96px,1fr)); gap:6px; margin-top:10px}
-.imgtile{display:grid; place-items:center; text-align:center; min-height:64px; border-radius:12px; background:var(--bg); border:1px solid var(--edge); color:var(--ink); text-decoration:none; font-size:.85rem; padding:6px}
-.linkbtn{border:0; background:none; color:var(--soft); text-decoration:underline; font-size:.85rem; padding:0 4px}
-.shelfh{font-size:1.05rem; color:var(--ink); margin:20px 4px 8px}
-.shelfh small{color:var(--soft); font-weight:400}
-a.btn.alt{color:var(--ink)}
-.alphagrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(104px,1fr)); gap:8px}
-.acard{background:var(--bg); border:1px solid var(--edge); border-radius:16px; padding:8px 4px 10px; display:grid; justify-items:center; gap:2px}
-.acard span{font-size:.85rem; color:var(--soft)}
-@media print{ body.print-alpha *{visibility:hidden} body.print-alpha .alphabox, body.print-alpha .alphabox *{visibility:visible} body.print-alpha .alphabox{position:absolute; left:0; top:0; width:100%; border:0} body.print-alpha #alphaPrint, body.print-alpha .alphabox p, body.print-alpha .alphabox h2{display:none} body.print-alpha .alphagrid{grid-template-columns:repeat(4,1fr)} body.print-alpha .acard{break-inside:avoid; background:#fff} }
-@media (prefers-reduced-motion:reduce){ .calm{animation:none} }
+.final{text-align:center; background:linear-gradient(180deg,var(--cream),var(--sagebg))}
+.final .pill{font-size:18px; padding:15px 28px; margin-top:22px}
+.final small{display:block; margin-top:12px; color:var(--soft)}
+footer{padding:36px clamp(20px,5vw,60px) calc(36px + env(safe-area-inset-bottom,0px)); display:flex; flex-wrap:wrap; gap:16px; justify-content:space-between; color:var(--soft); font-size:15px; background:var(--sagebg)}
+
+/* butterfly */
+#bfly{position:fixed; z-index:25; left:0; top:0; width:64px; height:64px; pointer-events:none; will-change:transform}
+#bfly .w{transform-box:fill-box; animation:flap .32s ease-in-out infinite alternate}
+#bfly .wl{transform-origin:100% 50%} #bfly .wr{transform-origin:0% 50%}
+@keyframes flap{from{transform:scaleX(1)} to{transform:scaleX(.25)}}
+
+@media (max-width:860px){
+  .links{display:none}
+  .split{grid-template-columns:1fr}
+  .points{grid-template-columns:1fr}
+  .cards{grid-template-columns:1fr 1fr}
+  .copy{padding-top:calc(100px + env(safe-area-inset-top,0px))}
+}
+@media (max-width:520px){ .cards{grid-template-columns:1fr} .agenda .min{display:none} }
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto} .cloud,.sway,.leafs,#bfly .w{animation:none} .reveal{opacity:1; transform:none; transition:none} #bfly{display:none}
+}
 </style>
 </head>
 <body>
-<div class="wrap" id="app"></div>
+<nav class="nav" id="nav">
+  <a class="logo" href="#top" aria-label="Reading Path home"><span>R</span><span>E</span><span>A</span><span>D</span><span>I</span><span>N</span><span>G</span> <span>P</span><span>A</span><span>T</span><span>H</span></a>
+  <div class="links"><a href="#how">How it works</a><a href="#reading">Reading</a><a href="#moms">For moms</a><a href="#bugs">Bug Lab</a></div>
+  <a class="pill" href="/app/" style="margin-left:auto">Start free</a>
+</nav>
 
-<div class="sheet" id="classSheet" role="dialog" aria-modal="true" aria-label="Today's class">
-  <div class="panel">
-    <div class="ptop"><div class="segs" id="segs"></div><button class="x" id="cclose" aria-label="Close class">×</button></div>
-    <p class="segname" id="segname"></p>
-    <div class="body" id="cbody"></div>
-    <div class="foot" id="cfoot"></div>
+<header class="hero" id="top">
+  <svg class="scene" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs><radialGradient id="sun"><stop offset="0" stop-color="#FFF6D2"/><stop offset=".45" stop-color="#FFF1C2" stop-opacity=".9"/><stop offset="1" stop-color="#FFF1C2" stop-opacity="0"/></radialGradient></defs>
+    <circle cx="1170" cy="170" r="150" fill="url(#sun)"/>
+    <g fill="#fff" style="transform-box:view-box">
+      <g class="cloud c1" style="transform-box:view-box" opacity=".7"><ellipse cx="200" cy="150" rx="110" ry="34"/><ellipse cx="160" cy="128" rx="60" ry="38"/><ellipse cx="236" cy="120" rx="70" ry="48"/></g>
+      <g class="cloud c2" style="transform-box:view-box" opacity=".55"><ellipse cx="160" cy="300" rx="90" ry="24"/><ellipse cx="190" cy="282" rx="50" ry="30"/></g>
+      <g class="cloud c3" style="transform-box:view-box" opacity=".45"><ellipse cx="120" cy="80" rx="70" ry="18"/><ellipse cx="146" cy="68" rx="38" ry="22"/></g>
+    </g>
+    <path d="M0 560 Q240 470 480 540 T960 515 T1440 495 V900 H0z" fill="#BCD2A6" opacity=".85"/>
+    <g transform="translate(1210 528)"><rect x="-22" y="-20" width="44" height="30" fill="#F3EBDD"/><path d="M-28 -18 L0 -40 L28 -18z" fill="#C9805F"/><rect x="-6" y="-6" width="12" height="16" fill="#8C6C4A"/></g>
+    <path d="M0 640 Q300 560 620 630 T1440 600 V900 H0z" fill="#A2C08A"/>
+    <path d="M0 735 Q420 640 900 712 T1440 700 V900 H0z" fill="#86AB6F"/>
+    <g transform="translate(1180 700)">
+      <path d="M-14 0 C-12 -60 -10 -110 -18 -150 L18 -150 C10 -110 12 -60 14 0z" fill="#7A5C3E"/>
+      <g class="leafs"><circle cx="-70" cy="-170" r="70" fill="#5E8A4E"/><circle cx="10" cy="-215" r="85" fill="#6E9A5B"/><circle cx="85" cy="-165" r="66" fill="#5E8A4E"/><circle cx="-10" cy="-150" r="70" fill="#7FA36A"/></g>
+    </g>
+    <g transform="translate(1062 708)">
+      <ellipse cx="0" cy="0" rx="70" ry="10" fill="#6E9A5B" opacity=".6"/>
+      <path d="M-30 0 q0-48 22-52 q22 4 22 52z" fill="#C9805F"/><circle cx="-8" cy="-62" r="13" fill="#E8C3A0"/><path d="M-22 -66 q14-18 28 0 q0 10-4 14 q-6-12-24-14z" fill="#5A3E2B"/>
+      <path d="M18 0 q0-30 14-33 q14 3 14 33z" fill="#5F95A3"/><circle cx="32" cy="-42" r="10" fill="#E8C3A0"/><path d="M22 -46 q10-14 20 0z" fill="#B8902F"/>
+      <path d="M6 -26 l14 -6 14 6 v14 l-14 -6 -14 6z" fill="#FFFEF8" stroke="#B89B74" stroke-width="1.5"/>
+    </g>
+    <g class="sway "><path d="M57 900 V864" stroke="#5E8A4E" stroke-width="2"/><circle cx="57" cy="864" r="5" fill="#F0D58C"/><circle cx="57" cy="864" r="1.8" fill="#D3A33A"/></g>
+<g class="sway b"><path d="M992 900 V831" stroke="#5E8A4E" stroke-width="2"/><circle cx="992" cy="831" r="5" fill="#F7F2E8"/><circle cx="992" cy="831" r="1.8" fill="#D3A33A"/></g>
+<g class="sway "><path d="M1368 900 V855" stroke="#5E8A4E" stroke-width="2"/><circle cx="1368" cy="855" r="5" fill="#F7F2E8"/><circle cx="1368" cy="855" r="1.8" fill="#D3A33A"/></g>
+<g class="sway "><path d="M825 900 V864" stroke="#5E8A4E" stroke-width="2"/><circle cx="825" cy="864" r="5" fill="#EDB89E"/><circle cx="825" cy="864" r="1.8" fill="#D3A33A"/></g>
+<g class="sway b"><path d="M460 900 V829" stroke="#5E8A4E" stroke-width="2"/><circle cx="460" cy="829" r="5" fill="#EDB89E"/><circle cx="460" cy="829" r="1.8" fill="#D3A33A"/></g>
+<g class="sway c"><path d="M1322 900 V817" stroke="#5E8A4E" stroke-width="2"/><circle cx="1322" cy="817" r="5" fill="#F7F2E8"/><circle cx="1322" cy="817" r="1.8" fill="#D3A33A"/></g>
+<g class="sway b"><path d="M131 900 V816" stroke="#5E8A4E" stroke-width="2"/><circle cx="131" cy="816" r="5" fill="#FFFFFF"/><circle cx="131" cy="816" r="1.8" fill="#D3A33A"/></g>
+<g class="sway b"><path d="M1300 900 V832" stroke="#5E8A4E" stroke-width="2"/><circle cx="1300" cy="832" r="5" fill="#F7F2E8"/><circle cx="1300" cy="832" r="1.8" fill="#D3A33A"/></g>
+<g class="sway "><path d="M133 900 V810" stroke="#5E8A4E" stroke-width="2"/><circle cx="133" cy="810" r="5" fill="#F7F2E8"/><circle cx="133" cy="810" r="1.8" fill="#D3A33A"/></g>
+<g class="sway "><path d="M1393 900 V836" stroke="#5E8A4E" stroke-width="2"/><circle cx="1393" cy="836" r="5" fill="#F0D58C"/><circle cx="1393" cy="836" r="1.8" fill="#D3A33A"/></g>
+<g class="sway b"><path d="M620 900 V805" stroke="#5E8A4E" stroke-width="2"/><circle cx="620" cy="805" r="5" fill="#F7F2E8"/><circle cx="620" cy="805" r="1.8" fill="#D3A33A"/></g>
+<g class="sway b"><path d="M342 900 V834" stroke="#5E8A4E" stroke-width="2"/><circle cx="342" cy="834" r="5" fill="#F7F2E8"/><circle cx="342" cy="834" r="1.8" fill="#D3A33A"/></g>
+<g class="sway "><path d="M559 900 V846" stroke="#5E8A4E" stroke-width="2"/><circle cx="559" cy="846" r="5" fill="#EDB89E"/><circle cx="559" cy="846" r="1.8" fill="#D3A33A"/></g>
+<g class="sway c"><path d="M682 900 V831" stroke="#5E8A4E" stroke-width="2"/><circle cx="682" cy="831" r="5" fill="#FFFFFF"/><circle cx="682" cy="831" r="1.8" fill="#D3A33A"/></g>
+<g class="sway b"><path d="M466 900 V845" stroke="#5E8A4E" stroke-width="2"/><circle cx="466" cy="845" r="5" fill="#F0D58C"/><circle cx="466" cy="845" r="1.8" fill="#D3A33A"/></g>
+<g class="sway c"><path d="M706 900 V848" stroke="#5E8A4E" stroke-width="2"/><circle cx="706" cy="848" r="5" fill="#FFFFFF"/><circle cx="706" cy="848" r="1.8" fill="#D3A33A"/></g>
+<g class="sway b"><path d="M591 900 V864" stroke="#5E8A4E" stroke-width="2"/><circle cx="591" cy="864" r="5" fill="#F0D58C"/><circle cx="591" cy="864" r="1.8" fill="#D3A33A"/></g>
+<g class="sway c"><path d="M1053 900 V800" stroke="#5E8A4E" stroke-width="2"/><circle cx="1053" cy="800" r="5" fill="#FFFFFF"/><circle cx="1053" cy="800" r="1.8" fill="#D3A33A"/></g>
+<g class="sway "><path d="M203 900 V818" stroke="#5E8A4E" stroke-width="2"/><circle cx="203" cy="818" r="5" fill="#F7F2E8"/><circle cx="203" cy="818" r="1.8" fill="#D3A33A"/></g>
+<g class="sway c"><path d="M105 900 V850" stroke="#5E8A4E" stroke-width="2"/><circle cx="105" cy="850" r="5" fill="#FFFFFF"/><circle cx="105" cy="850" r="1.8" fill="#D3A33A"/></g>
+<g class="sway b"><path d="M643 900 V880" stroke="#5E8A4E" stroke-width="2"/><circle cx="643" cy="880" r="5" fill="#F0D58C"/><circle cx="643" cy="880" r="1.8" fill="#D3A33A"/></g>
+<g class="sway "><path d="M1219 900 V867" stroke="#5E8A4E" stroke-width="2"/><circle cx="1219" cy="867" r="5" fill="#F0D58C"/><circle cx="1219" cy="867" r="1.8" fill="#D3A33A"/></g>
+<g class="sway "><path d="M1241 900 V849" stroke="#5E8A4E" stroke-width="2"/><circle cx="1241" cy="849" r="5" fill="#EDB89E"/><circle cx="1241" cy="849" r="1.8" fill="#D3A33A"/></g>
+<g class="sway "><path d="M1032 900 V819" stroke="#5E8A4E" stroke-width="2"/><circle cx="1032" cy="819" r="5" fill="#EDB89E"/><circle cx="1032" cy="819" r="1.8" fill="#D3A33A"/></g>
+<g class="sway "><path d="M1287 900 V818" stroke="#5E8A4E" stroke-width="2"/><circle cx="1287" cy="818" r="5" fill="#FFFFFF"/><circle cx="1287" cy="818" r="1.8" fill="#D3A33A"/></g>
+<g class="sway "><path d="M1070 900 V880" stroke="#5E8A4E" stroke-width="2"/><circle cx="1070" cy="880" r="5" fill="#F7F2E8"/><circle cx="1070" cy="880" r="1.8" fill="#D3A33A"/></g>
+<path class="sway" d="M-2 900 q-1.0 -30.0 -2 -60 q5.0 30.0 8 60z" fill="#6E9A5B"/>
+<path class="sway c" d="M18 900 q-5.5 -46.0 -11 -92 q9.5 46.0 8 92z" fill="#5E8A4E"/>
+<path class="sway" d="M32 900 q-4.0 -21.5 -8 -43 q8.0 21.5 8 43z" fill="#6E9A5B"/>
+<path class="sway" d="M44 900 q-6.0 -33.5 -12 -67 q10.0 33.5 8 67z" fill="#7FA36A"/>
+<path class="sway" d="M58 900 q-6.5 -37.5 -13 -75 q10.5 37.5 8 75z" fill="#6E9A5B"/>
+<path class="sway" d="M66 900 q2.0 -40.0 4 -80 q2.0 40.0 8 80z" fill="#8DB277"/>
+<path class="sway b" d="M80 900 q1.5 -27.0 3 -54 q2.5 27.0 8 54z" fill="#7FA36A"/>
+<path class="sway c" d="M96 900 q1.5 -33.0 3 -66 q2.5 33.0 8 66z" fill="#6E9A5B"/>
+<path class="sway" d="M116 900 q6.0 -29.5 12 -59 q-2.0 29.5 8 59z" fill="#7FA36A"/>
+<path class="sway c" d="M125 900 q-1.5 -38.5 -3 -77 q5.5 38.5 8 77z" fill="#6E9A5B"/>
+<path class="sway c" d="M137 900 q2.0 -42.5 4 -85 q2.0 42.5 8 85z" fill="#6E9A5B"/>
+<path class="sway b" d="M157 900 q3.5 -26.5 7 -53 q0.5 26.5 8 53z" fill="#8DB277"/>
+<path class="sway" d="M171 900 q-1.5 -34.5 -3 -69 q5.5 34.5 8 69z" fill="#5E8A4E"/>
+<path class="sway" d="M180 900 q4.0 -45.0 8 -90 q0.0 45.0 8 90z" fill="#7FA36A"/>
+<path class="sway b" d="M196 900 q1.0 -38.0 2 -76 q3.0 38.0 8 76z" fill="#8DB277"/>
+<path class="sway" d="M213 900 q-2.5 -43.0 -5 -86 q6.5 43.0 8 86z" fill="#6E9A5B"/>
+<path class="sway" d="M226 900 q-4.5 -36.0 -9 -72 q8.5 36.0 8 72z" fill="#5E8A4E"/>
+<path class="sway c" d="M240 900 q-6.5 -35.5 -13 -71 q10.5 35.5 8 71z" fill="#6E9A5B"/>
+<path class="sway c" d="M253 900 q-2.0 -38.0 -4 -76 q6.0 38.0 8 76z" fill="#5E8A4E"/>
+<path class="sway b" d="M269 900 q-6.0 -35.5 -12 -71 q10.0 35.5 8 71z" fill="#6E9A5B"/>
+<path class="sway c" d="M277 900 q-6.5 -35.0 -13 -70 q10.5 35.0 8 70z" fill="#5E8A4E"/>
+<path class="sway c" d="M297 900 q-2.5 -38.0 -5 -76 q6.5 38.0 8 76z" fill="#8DB277"/>
+<path class="sway" d="M304 900 q0.0 -31.0 0 -62 q4.0 31.0 8 62z" fill="#5E8A4E"/>
+<path class="sway" d="M319 900 q0.5 -39.5 1 -79 q3.5 39.5 8 79z" fill="#6E9A5B"/>
+<path class="sway b" d="M336 900 q-5.0 -44.5 -10 -89 q9.0 44.5 8 89z" fill="#7FA36A"/>
+<path class="sway b" d="M353 900 q-6.0 -32.5 -12 -65 q10.0 32.5 8 65z" fill="#7FA36A"/>
+<path class="sway b" d="M368 900 q-3.0 -32.5 -6 -65 q7.0 32.5 8 65z" fill="#7FA36A"/>
+<path class="sway b" d="M382 900 q-3.0 -47.5 -6 -95 q7.0 47.5 8 95z" fill="#8DB277"/>
+<path class="sway" d="M394 900 q-3.5 -41.5 -7 -83 q7.5 41.5 8 83z" fill="#7FA36A"/>
+<path class="sway" d="M404 900 q-3.5 -25.5 -7 -51 q7.5 25.5 8 51z" fill="#7FA36A"/>
+<path class="sway" d="M418 900 q-3.0 -35.5 -6 -71 q7.0 35.5 8 71z" fill="#5E8A4E"/>
+<path class="sway c" d="M436 900 q1.5 -24.5 3 -49 q2.5 24.5 8 49z" fill="#5E8A4E"/>
+<path class="sway b" d="M449 900 q-5.0 -38.0 -10 -76 q9.0 38.0 8 76z" fill="#6E9A5B"/>
+<path class="sway b" d="M466 900 q-1.0 -47.5 -2 -95 q5.0 47.5 8 95z" fill="#8DB277"/>
+<path class="sway" d="M473 900 q0.5 -32.5 1 -65 q3.5 32.5 8 65z" fill="#8DB277"/>
+<path class="sway" d="M487 900 q-4.0 -26.0 -8 -52 q8.0 26.0 8 52z" fill="#8DB277"/>
+<path class="sway" d="M505 900 q2.5 -23.5 5 -47 q1.5 23.5 8 47z" fill="#6E9A5B"/>
+<path class="sway b" d="M516 900 q1.5 -20.0 3 -40 q2.5 20.0 8 40z" fill="#6E9A5B"/>
+<path class="sway c" d="M528 900 q-6.0 -39.5 -12 -79 q10.0 39.5 8 79z" fill="#7FA36A"/>
+<path class="sway b" d="M544 900 q3.0 -32.0 6 -64 q1.0 32.0 8 64z" fill="#5E8A4E"/>
+<path class="sway" d="M561 900 q0.5 -39.0 1 -78 q3.5 39.0 8 78z" fill="#6E9A5B"/>
+<path class="sway b" d="M577 900 q0.0 -47.0 0 -94 q4.0 47.0 8 94z" fill="#8DB277"/>
+<path class="sway c" d="M585 900 q-5.0 -29.5 -10 -59 q9.0 29.5 8 59z" fill="#6E9A5B"/>
+<path class="sway c" d="M602 900 q0.5 -30.5 1 -61 q3.5 30.5 8 61z" fill="#7FA36A"/>
+<path class="sway" d="M615 900 q1.0 -20.5 2 -41 q3.0 20.5 8 41z" fill="#5E8A4E"/>
+<path class="sway c" d="M634 900 q-7.0 -42.0 -14 -84 q11.0 42.0 8 84z" fill="#5E8A4E"/>
+<path class="sway c" d="M641 900 q4.0 -47.5 8 -95 q0.0 47.5 8 95z" fill="#5E8A4E"/>
+<path class="sway c" d="M656 900 q-1.5 -31.5 -3 -63 q5.5 31.5 8 63z" fill="#7FA36A"/>
+<path class="sway c" d="M676 900 q-2.0 -37.0 -4 -74 q6.0 37.0 8 74z" fill="#7FA36A"/>
+<path class="sway b" d="M685 900 q5.5 -45.5 11 -91 q-1.5 45.5 8 91z" fill="#7FA36A"/>
+<path class="sway b" d="M699 900 q-4.0 -43.5 -8 -87 q8.0 43.5 8 87z" fill="#8DB277"/>
+<path class="sway b" d="M710 900 q-7.0 -43.0 -14 -86 q11.0 43.0 8 86z" fill="#5E8A4E"/>
+<path class="sway b" d="M727 900 q4.0 -28.0 8 -56 q0.0 28.0 8 56z" fill="#5E8A4E"/>
+<path class="sway" d="M743 900 q-1.5 -45.5 -3 -91 q5.5 45.5 8 91z" fill="#6E9A5B"/>
+<path class="sway b" d="M755 900 q0.5 -23.0 1 -46 q3.5 23.0 8 46z" fill="#7FA36A"/>
+<path class="sway b" d="M773 900 q2.5 -26.5 5 -53 q1.5 26.5 8 53z" fill="#6E9A5B"/>
+<path class="sway c" d="M785 900 q5.5 -40.5 11 -81 q-1.5 40.5 8 81z" fill="#6E9A5B"/>
+<path class="sway b" d="M800 900 q5.5 -23.5 11 -47 q-1.5 23.5 8 47z" fill="#7FA36A"/>
+<path class="sway" d="M814 900 q5.5 -25.5 11 -51 q-1.5 25.5 8 51z" fill="#5E8A4E"/>
+<path class="sway c" d="M828 900 q0.0 -45.5 0 -91 q4.0 45.5 8 91z" fill="#8DB277"/>
+<path class="sway" d="M838 900 q-4.5 -22.5 -9 -45 q8.5 22.5 8 45z" fill="#7FA36A"/>
+<path class="sway c" d="M857 900 q5.5 -24.5 11 -49 q-1.5 24.5 8 49z" fill="#7FA36A"/>
+<path class="sway" d="M871 900 q3.5 -46.0 7 -92 q0.5 46.0 8 92z" fill="#5E8A4E"/>
+<path class="sway" d="M886 900 q-5.0 -37.5 -10 -75 q9.0 37.5 8 75z" fill="#6E9A5B"/>
+<path class="sway b" d="M893 900 q1.0 -45.5 2 -91 q3.0 45.5 8 91z" fill="#7FA36A"/>
+<path class="sway" d="M909 900 q6.0 -47.5 12 -95 q-2.0 47.5 8 95z" fill="#7FA36A"/>
+<path class="sway c" d="M923 900 q-2.5 -28.0 -5 -56 q6.5 28.0 8 56z" fill="#7FA36A"/>
+<path class="sway" d="M938 900 q1.5 -30.0 3 -60 q2.5 30.0 8 60z" fill="#8DB277"/>
+<path class="sway c" d="M953 900 q7.0 -21.5 14 -43 q-3.0 21.5 8 43z" fill="#8DB277"/>
+<path class="sway c" d="M970 900 q-0.5 -38.5 -1 -77 q4.5 38.5 8 77z" fill="#7FA36A"/>
+<path class="sway b" d="M984 900 q1.0 -24.5 2 -49 q3.0 24.5 8 49z" fill="#6E9A5B"/>
+<path class="sway" d="M992 900 q2.5 -44.5 5 -89 q1.5 44.5 8 89z" fill="#6E9A5B"/>
+<path class="sway c" d="M1006 900 q0.5 -25.5 1 -51 q3.5 25.5 8 51z" fill="#6E9A5B"/>
+<path class="sway" d="M1023 900 q3.5 -21.5 7 -43 q0.5 21.5 8 43z" fill="#8DB277"/>
+<path class="sway b" d="M1032 900 q-3.5 -37.5 -7 -75 q7.5 37.5 8 75z" fill="#7FA36A"/>
+<path class="sway c" d="M1047 900 q1.0 -21.0 2 -42 q3.0 21.0 8 42z" fill="#8DB277"/>
+<path class="sway c" d="M1061 900 q0.0 -20.5 0 -41 q4.0 20.5 8 41z" fill="#5E8A4E"/>
+<path class="sway b" d="M1082 900 q-4.0 -36.0 -8 -72 q8.0 36.0 8 72z" fill="#5E8A4E"/>
+<path class="sway c" d="M1096 900 q5.5 -36.0 11 -72 q-1.5 36.0 8 72z" fill="#8DB277"/>
+<path class="sway c" d="M1110 900 q7.0 -27.5 14 -55 q-3.0 27.5 8 55z" fill="#5E8A4E"/>
+<path class="sway" d="M1123 900 q-5.0 -26.0 -10 -52 q9.0 26.0 8 52z" fill="#8DB277"/>
+<path class="sway c" d="M1137 900 q-2.0 -32.5 -4 -65 q6.0 32.5 8 65z" fill="#6E9A5B"/>
+<path class="sway c" d="M1150 900 q-6.0 -27.5 -12 -55 q10.0 27.5 8 55z" fill="#7FA36A"/>
+<path class="sway c" d="M1159 900 q7.0 -29.5 14 -59 q-3.0 29.5 8 59z" fill="#7FA36A"/>
+<path class="sway" d="M1177 900 q-5.0 -40.5 -10 -81 q9.0 40.5 8 81z" fill="#5E8A4E"/>
+<path class="sway b" d="M1189 900 q4.5 -34.5 9 -69 q-0.5 34.5 8 69z" fill="#6E9A5B"/>
+<path class="sway" d="M1202 900 q3.5 -35.5 7 -71 q0.5 35.5 8 71z" fill="#7FA36A"/>
+<path class="sway b" d="M1220 900 q1.0 -42.5 2 -85 q3.0 42.5 8 85z" fill="#8DB277"/>
+<path class="sway" d="M1231 900 q-1.5 -33.0 -3 -66 q5.5 33.0 8 66z" fill="#5E8A4E"/>
+<path class="sway c" d="M1247 900 q-7.0 -43.0 -14 -86 q11.0 43.0 8 86z" fill="#5E8A4E"/>
+<path class="sway b" d="M1263 900 q4.0 -34.5 8 -69 q0.0 34.5 8 69z" fill="#6E9A5B"/>
+<path class="sway c" d="M1278 900 q2.5 -30.5 5 -61 q1.5 30.5 8 61z" fill="#5E8A4E"/>
+<path class="sway" d="M1285 900 q5.5 -22.0 11 -44 q-1.5 22.0 8 44z" fill="#7FA36A"/>
+<path class="sway" d="M1302 900 q-3.0 -22.5 -6 -45 q7.0 22.5 8 45z" fill="#6E9A5B"/>
+<path class="sway c" d="M1314 900 q6.0 -28.5 12 -57 q-2.0 28.5 8 57z" fill="#8DB277"/>
+<path class="sway c" d="M1330 900 q-1.0 -46.0 -2 -92 q5.0 46.0 8 92z" fill="#7FA36A"/>
+<path class="sway" d="M1347 900 q4.0 -36.0 8 -72 q0.0 36.0 8 72z" fill="#5E8A4E"/>
+<path class="sway b" d="M1354 900 q5.5 -28.5 11 -57 q-1.5 28.5 8 57z" fill="#7FA36A"/>
+<path class="sway b" d="M1372 900 q-7.0 -22.0 -14 -44 q11.0 22.0 8 44z" fill="#6E9A5B"/>
+<path class="sway" d="M1385 900 q-6.0 -22.5 -12 -45 q10.0 22.5 8 45z" fill="#5E8A4E"/>
+<path class="sway b" d="M1396 900 q-2.0 -34.5 -4 -69 q6.0 34.5 8 69z" fill="#8DB277"/>
+<path class="sway" d="M1412 900 q-6.5 -39.5 -13 -79 q10.5 39.5 8 79z" fill="#7FA36A"/>
+<path class="sway" d="M1428 900 q-6.5 -25.0 -13 -50 q10.5 25.0 8 50z" fill="#7FA36A"/>
+<path class="sway b" d="M1442 900 q1.0 -29.5 2 -59 q3.0 29.5 8 59z" fill="#7FA36A"/>
+<path class="sway b" d="M1460 900 q3.5 -34.0 7 -68 q0.5 34.0 8 68z" fill="#7FA36A"/>
+<path class="sway" d="M1466 900 q-3.0 -31.0 -6 -62 q7.0 31.0 8 62z" fill="#6E9A5B"/>
+  </svg>
+  <div class="copy">
+    <p class="kicker os">Homeschool reading, gently</p>
+    <h1><span class="l">One calm class</span><span class="l">a day</span></h1>
+    <p class="sub">Phonics, spelling, nature study and a coach for the hard days, laid out one short class at a time. For moms who are tired of starting over.</p>
+    <form class="signup" id="signup">
+      <label for="email">Start free with your email</label>
+      <div class="row"><input type="email" id="email" required autocomplete="email" placeholder="you@example.com"><button class="pill" type="submit">Start free</button></div>
+      <small id="signupMsg" aria-live="polite">Free while in early access. No password: we email you a sign-in link. Already have an account? Same box.</small>
+    </form>
+    <div class="ctas"><a class="pill ghost" href="#how">See how a class works</a></div>
   </div>
-</div>
+</header>
 
-<div class="sheet" id="coachSheet" role="dialog" aria-modal="true" aria-label="Parent coach">
-  <div class="panel">
-    <div class="ptop"><h2 style="flex:1;margin:0;font-size:1.2rem">Parent coach</h2><button class="x" id="kclose" aria-label="Close coach">×</button></div>
-    <p class="disc">Gentle guidance on tears, focus and tired days. Not medical advice: for health or development worries, talk with your pediatrician.</p>
-    <div class="chat" id="chat"></div>
-    <div class="quick" id="quick"></div>
-    <div class="ask" id="ask"></div>
+<main>
+<section class="band" id="how" data-fly=".78,.30">
+  <div class="wrap split">
+    <div class="reveal"><div class="num">01</div><h2 class="t">A whole class,<br>done for you</h2>
+      <p class="lead">Press one button and the app walks you through it, screen by screen: what to say, what to show, and when to stop. No planning the night before, no PDF to lose.</p></div>
+    <ul class="agenda reveal d1">
+      <li><span class="dot" style="background:var(--skybg)"><svg viewBox="0 0 24 24"><path d="M12 10v10M9 20h6M12 3c2 2 2 4 0 5-2-1-2-3 0-5z"/></svg></span><div><b>Morning Time</b><small>A short prayer and a hello song</small></div><span class="min">3 min</span></li>
+      <li><span class="dot" style="background:var(--peachbg)"><svg viewBox="0 0 24 24"><path d="M4 5h6a2 2 0 012 2v12a2 2 0 00-2-2H4zM20 5h-6a2 2 0 00-2 2v12a2 2 0 012-2h6z"/></svg></span><div><b>Lesson</b><small>A narrated demo you follow along with</small></div><span class="min">10 min</span></li>
+      <li><span class="dot" style="background:var(--sagebg)"><svg viewBox="0 0 24 24"><path d="M5 19c0-8 6-14 14-14 0 8-6 14-14 14zM5 19l8-8"/></svg></span><div><b>Movement break</b><small>They wiggle, you sit</small></div><span class="min">5 min</span></li>
+      <li><span class="dot" style="background:var(--skybg)"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 10h14l-5-10V3"/></svg></span><div><b>Hands-on activity</b><small>Low-prep STEM with things you already have</small></div><span class="min">10 min</span></li>
+      <li><span class="dot" style="background:var(--butterbg)"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg></span><div><b>Story time</b><small>A short story with this week's words</small></div><span class="min">5 min</span></li>
+      <li><span class="dot" style="background:var(--peachbg)"><svg viewBox="0 0 24 24"><path d="M20 14A8 8 0 1110 4a6 6 0 0010 10z"/></svg></span><div><b>Goodbye song and a nature stamp</b><small>The part kids look forward to</small></div><span class="min">2 min</span></li>
+    </ul>
   </div>
-</div>
+</section>
 
-<div class="sheet" id="storySheet" role="dialog" aria-modal="true" aria-label="This week's story">
-  <div class="panel">
-    <div class="ptop"><h2 style="flex:1;margin:0;font-size:1.2rem">This week's story</h2><button class="x" id="sclose" aria-label="Close">×</button></div>
-    <div class="body" id="sbody"></div>
+<section class="band" id="reading" data-fly=".14,.22" style="background:var(--card)">
+  <div class="wrap">
+    <div class="reveal"><div class="num">02</div><h2 class="t">Reading that sticks</h2>
+      <p class="lead">Built on the Orton-Gillingham order: sounds first, then blending, then spelling rules, always reviewing before anything new. Every lesson goes watch me, together, your turn.</p></div>
+    <div class="letters reveal d1" id="letters" aria-label="Picture alphabet"></div>
+    <div class="points reveal d2">
+      <div><b>Two tracks, one class</b><span>Phonics for little ones, Orton-Gillingham spelling for big kids.</span></div>
+      <div><b>A starting check</b><span>A two-minute quiz finds the right week, so nobody repeats what they know.</span></div>
+      <div><b>Mistakes become clues</b><span>Note the kind of mistake and the app suggests what to review.</span></div>
+    </div>
   </div>
-</div>
+</section>
 
-<div class="sheet" id="placeSheet" role="dialog" aria-modal="true" aria-label="Starting check">
-  <div class="panel">
-    <div class="ptop"><h2 style="flex:1;margin:0;font-size:1.2rem">Starting check</h2><button class="x" id="plclose" aria-label="Close">×</button></div>
-    <div class="body" id="pbody"></div>
+<section class="band dark" id="moms" data-fly=".82,.18">
+  <div class="wrap">
+    <div class="reveal"><div class="num">03</div><h2 class="t">Made for tired days</h2>
+      <p class="lead">Consistency beats intensity. The app is built so a hard morning still counts.</p></div>
+    <div class="cards">
+      <div class="card reveal d1"><span class="ic"><svg viewBox="0 0 24 24"><path d="M20 14A8 8 0 1110 4a6 6 0 0010 10z"/></svg></span><b>Tired day and minimum day</b><span>A 12-minute class, or just Morning Time and a story. No catching up, ever.</span></div>
+      <div class="card reveal d2"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg></span><b>The pause button</b><span>Tears happen. One tap brings a breathing circle and a gentle way to finish early.</span></div>
+      <div class="card reveal d3"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg></span><b>A parent coach</b><span>Ask about meltdowns, focus or your own tiredness, and get a script you can say today.</span></div>
+      <div class="card reveal d3"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></span><b>For Mom</b><span>A daily affirmation, a calm corner for you, and a library of books for hard seasons.</span></div>
+    </div>
+    <p class="affirm reveal">"I'm not behind. We're on our own path."</p>
   </div>
-</div>
+</section>
 
-<script type="module" src="/src/main.js"></script>
+<section class="band" id="bugs" data-fly=".64,.56">
+  <div class="wrap split">
+    <div class="reveal"><div class="num">04</div><h2 class="t">Little scientists</h2>
+      <p class="lead">Bug Lab is an 8-week nature study for both children together: a read-aloud, a hands-on lab and a nature journal page, with a version for ages 4 and 7.</p>
+      <div class="weeks"><span><b>W1</b> What makes an insect</span><span><b>W2</b> Insect or not?</span><span><b>W3</b> Egg to butterfly</span><span><b>W4</b> Ants</span><span><b>W5</b> Bees and flowers</span><span><b>W6</b> Ladybugs</span><span><b>W7</b> Camouflage</span><span><b>W8</b> Bug hotel</span></div></div>
+    <div class="bugart reveal d1" aria-hidden="true">
+      <svg viewBox="0 0 400 300" width="100%" height="100%">
+        <path d="M0 230 Q120 190 240 220 T400 210 V300 H0z" fill="#A2C08A"/>
+        <g transform="translate(120 140)"><ellipse rx="40" ry="34" fill="#C0584A"/><path d="M0 -34 V34" stroke="#3B352E" stroke-width="3"/><circle cx="-16" cy="-8" r="7" fill="#3B352E"/><circle cx="16" cy="6" r="7" fill="#3B352E"/><circle cx="-12" cy="16" r="5" fill="#3B352E"/><circle cx="0" cy="-44" r="14" fill="#3B352E"/><path d="M-6 -56l-8-14M6 -56l8-14" stroke="#3B352E" stroke-width="3" stroke-linecap="round"/></g>
+        <g transform="translate(280 110)"><path d="M0 0 C-50 -60 -90 -10 -40 20 C-80 40 -40 80 0 30z" fill="#F0D58C"/><path d="M0 0 C50 -60 90 -10 40 20 C80 40 40 80 0 30z" fill="#EDB89E"/><rect x="-4" y="-10" width="8" height="48" rx="4" fill="#3B352E"/></g>
+        <g transform="translate(230 240)"><circle r="10" fill="#fff"/><circle r="4" fill="#D3A33A"/></g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="band final" id="start" data-fly=".5,.16">
+  <div class="wrap reveal">
+    <h2 class="t">Start your first class<br>tomorrow morning</h2>
+    <p class="lead" style="margin:0 auto">Sign in with your email, take the two-minute starting check, and press Start. That's all the planning there is.</p>
+    <a class="pill" href="/app/">Start free</a>
+    <small>Free while in early access.</small>
+  </div>
+</section>
+</main>
+
+<footer><span>Reading Path · one calm class a day</span><span>Not medical advice. For health or development worries, talk with your pediatrician.</span></footer>
+
+<svg id="bfly" viewBox="0 0 64 64" aria-hidden="true">
+  <g class="w wl"><path d="M32 30 C18 6 2 16 14 30 C2 40 18 52 32 36z" fill="#EDB89E"/></g>
+  <g class="w wr"><path d="M32 30 C46 6 62 16 50 30 C62 40 46 52 32 36z" fill="#F0D58C"/></g>
+  <rect x="30" y="22" width="4" height="22" rx="2" fill="#3B352E"/>
+  <path d="M31 22 l-5 -8 M33 22 l5 -8" stroke="#3B352E" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
+<script>
+/* ---------- Picture alphabet: each letter becomes a picture of its sound word (original artwork) ---------- */
+const INK="#3B352E";
+const ALPHA = {
+ a:["apple","#C0584A",`<path d="M100 76q1-12 9-18" stroke="#6b4f2a" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M108 60q16-10 26 2q-14 9-26-2z" fill="#7f9c63"/>`],
+ b:["bunny","#A9978A",`<ellipse cx="64" cy="20" rx="7" ry="20" fill="#E9DDD0" stroke="#8C6C4A" stroke-width="3"/><ellipse cx="81" cy="22" rx="7" ry="20" fill="#E9DDD0" stroke="#8C6C4A" stroke-width="3" transform="rotate(14 81 22)"/><circle cx="116" cy="104" r="5" fill="${INK}"/><circle cx="128" cy="116" r="4" fill="#D98C8C"/>`],
+ c:["caterpillar","#8FAA6E",`<circle cx="128" cy="82" r="11" fill="#6F9460"/><circle cx="131" cy="80" r="3" fill="#fff"/><path d="M124 72l-6-14M133 72l5-14" stroke="${INK}" stroke-width="3" stroke-linecap="round"/><g fill="#6F9460"><circle cx="72" cy="100" r="5"/><circle cx="71" cy="126" r="5"/><circle cx="84" cy="146" r="5"/><circle cx="108" cy="151" r="5"/></g>`],
+ d:["duck","#D3B05A",`<circle cx="122" cy="52" r="5" fill="${INK}"/><path d="M134 54l20 4-20 8z" fill="#D9873E"/><path d="M64 140q-18 2-26-10" stroke="#5F95A3" stroke-width="5" fill="none" stroke-linecap="round"/>`],
+ e:["egg","#E6DDCB",`<circle cx="100" cy="98" r="15" fill="#F0C24B"/>`,"#B8A98F"],
+ f:["flag","#5F95A3",`<path d="M126 40l34 12-34 12z" fill="#C9805F"/>`],
+ g:["grapes","#8A6A8F",`<path d="M74 180q-6 8-2 14" stroke="#7f9c63" stroke-width="4" fill="none" stroke-linecap="round"/><g fill="#A88BB0"><circle cx="72" cy="198" r="8"/><circle cx="86" cy="202" r="8"/><circle cx="78" cy="212" r="8"/></g>`],
+ h:["house","#B88A5E",`<path d="M46 70L100 30L154 70" stroke="#C0584A" stroke-width="8" fill="none" stroke-linejoin="round" stroke-linecap="round"/><rect x="93" y="120" width="16" height="30" rx="3" fill="#E9DDD0"/>`],
+ i:["inchworm","#7F9C63",`<circle cx="95" cy="46" r="3.5" fill="#fff"/><circle cx="105" cy="46" r="3.5" fill="#fff"/><circle cx="95" cy="46" r="1.8" fill="${INK}"/><circle cx="105" cy="46" r="1.8" fill="${INK}"/><path d="M96 52q4 3 8 0" stroke="${INK}" stroke-width="2" fill="none"/>`],
+ j:["jellyfish","#5F95A3",`<path d="M90 54q14-30 28 0z" fill="#A3C8D0"/><path d="M95 54q-3 8 0 14M104 54q3 8 0 14M113 54q-3 8 0 14" stroke="#A3C8D0" stroke-width="3" fill="none" stroke-linecap="round"/>`],
+ k:["kite","#8C6C4A",`<path d="M158 16l15 19-15 21-15-21z" fill="#C9805F"/><path d="M158 16v40M143 35h30" stroke="#F3E6D6" stroke-width="2"/><path d="M158 56q-6 14-20 22" stroke="${INK}" stroke-width="2" fill="none" stroke-dasharray="4 4"/>`],
+ l:["ladder","#8C6C4A",`<path d="M136 40v110" stroke="#8C6C4A" stroke-width="10" stroke-linecap="round"/><g stroke="#B89B74" stroke-width="6" stroke-linecap="round"><path d="M112 58h24M112 84h24M112 110h24M112 136h24"/></g>`],
+ m:["mountains","#6E7F5E",`<path d="M68 82l10-8 10 8q-10-3-20 0zM114 82l10-8 10 8q-10-3-20 0z" fill="#fff"/><circle cx="172" cy="44" r="12" fill="#F0C24B"/>`],
+ n:["net","#5F95A3",`<g stroke="#A3C8D0" stroke-width="2.5"><path d="M90 104h22M90 122h22M90 140h22M97 96v54M105 96v54"/></g>`],
+ o:["orange","#D9873E",`<path d="M100 76q8-14 22-14q-5 13-22 14z" fill="#7f9c63"/><g fill="#B8692E" opacity=".5"><circle cx="86" cy="100" r="2"/><circle cx="114" cy="112" r="2"/><circle cx="96" cy="130" r="2"/></g>`],
+ p:["pan","#6B6F73",`<path d="M98 68q-6-10 0-18M114 68q-6-10 0-18M130 68q-6-10 0-18" stroke="#B8A98F" stroke-width="3" fill="none" stroke-linecap="round"/>`],
+ q:["queen","#8A6A8F",`<path d="M78 74l6-20 10 12 8-16 8 16 10-12 6 20z" fill="#D3B05A"/><circle cx="102" cy="48" r="4" fill="#C0584A"/>`],
+ r:["rain","#5F95A3",`<path d="M120 62q8-14 24-9q12-7 20 5q10 2 9 12h-53z" fill="#DDE6EA"/><g fill="#A3C8D0"><path d="M140 78q-6 10 0 14q6-4 0-14z"/><path d="M156 92q-6 10 0 14q6-4 0-14z"/><path d="M146 110q-6 10 0 14q6-4 0-14z"/></g>`],
+ s:["snake","#6F9460",`<circle cx="112" cy="86" r="4" fill="${INK}"/><path d="M124 86l10-2-5 6 8 2" stroke="#C0584A" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`],
+ t:["tree","#8C6C4A",`<g fill="#8FAA6E"><circle cx="88" cy="46" r="18"/><circle cx="110" cy="40" r="20"/><circle cx="100" cy="60" r="16"/></g><circle cx="96" cy="48" r="4" fill="#C0584A"/>`],
+ u:["up","#C9805F",`<path d="M100 66V22M86 36l14-14 14 14" stroke="#5F95A3" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`],
+ v:["vine","#6F9460",`<g fill="#8FAA6E"><path d="M66 104q-14-4-16 8q14 4 16-8z"/><path d="M84 132q14-6 20 4q-12 8-20-4z"/><path d="M134 104q14-4 16 8q-14 4-16-8z"/><path d="M116 132q-14-6-20 4q12 8 20-4z"/></g>`],
+ w:["waves","#5F95A3",`<path d="M42 84q7-11 16-4M92 84q7-11 16-4M142 84q7-11 16-4" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/>`],
+ x:["fox","#C9805F",`<path d="M62 82l6-22 14 14zM138 82l-6-22-14 14z" fill="#C9805F"/><circle cx="100" cy="114" r="6" fill="${INK}"/><circle cx="90" cy="102" r="3" fill="${INK}"/><circle cx="110" cy="102" r="3" fill="${INK}"/>`],
+ y:["yo-yo","#8A6A8F",`<path d="M66 184v12" stroke="${INK}" stroke-width="2"/><circle cx="66" cy="206" r="11" fill="#C9805F"/><circle cx="66" cy="206" r="4" fill="#F3E6D6"/>`],
+ z:["zap","#D3B05A",`<path d="M140 64l10-6-4 12 10-4M60 162l-10 6 4-12-10 4" stroke="#B8902F" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`]
+};
+function alphaSvg(ch, size=120){
+  const e=ALPHA[ch]; if(!e) return "";
+  const [w,col,deco,stroke]=e;
+  return `<svg viewBox="0 -10 200 230" width="${size}" height="${size*1.15}" role="img" aria-label="${ch} for ${w}" style="overflow:visible"><text x="100" y="150" text-anchor="middle" font-family="Andika, sans-serif" font-weight="700" font-size="160" fill="${col}"${stroke?` stroke="${stroke}" stroke-width="3"`:""}>${ch}</text>${deco}</svg>`;
+}
+
+document.getElementById("letters").innerHTML=Object.keys(ALPHA).map(c=>`<figure>${alphaSvg(c,100)}<figcaption>${c} · ${ALPHA[c][0]}</figcaption></figure>`).join("");
+const nav=document.getElementById("nav");
+const scene=document.querySelector(".scene"); const fitScene=()=>{ const r=innerWidth/innerHeight;
+  // phones: zoom onto the tree and the readers; tablets: keep the right side; wide screens: the whole hillside
+  scene.setAttribute("viewBox", r<.8 ? "820 0 620 900" : "0 0 1440 900");
+  scene.setAttribute("preserveAspectRatio", r<.8 ? "xMidYMax slice" : r<1.25 ? "xMaxYMax slice" : "xMidYMax slice"); }; fitScene(); addEventListener("resize",fitScene);
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("in")}),{threshold:.18});
+document.querySelectorAll("main section").forEach(s=>io.observe(s));
+addEventListener("scroll",()=>nav.classList.toggle("solid",scrollY>innerHeight*.6),{passive:true});
+// butterfly: flies to a spot in each section as you scroll
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const bf=document.getElementById("bfly");
+if(!reduce){
+  const secs=[document.getElementById("top"),...document.querySelectorAll("[data-fly]")];
+  const spots=[[.30,.55],...[...document.querySelectorAll("[data-fly]")].map(s=>s.dataset.fly.split(",").map(Number))];
+  const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  let cur={x:spots[0][0],y:spots[0][1]}, last=performance.now(), px=0;
+  function target(){
+    const mid=scrollY+innerHeight*.5; let i=0;
+    for(let k=0;k<secs.length;k++){ if(secs[k].offsetTop<=mid) i=k; }
+    const s=secs[i], n=secs[Math.min(i+1,secs.length-1)];
+    const f=Math.min(1,Math.max(0,(mid-s.offsetTop)/Math.max(1,s.offsetHeight)));
+    const t=ease(Math.min(1,Math.max(0,(f-.55)/.45)));
+    const a=spots[i], b=spots[Math.min(i+1,spots.length-1)];
+    return {x:a[0]+(b[0]-a[0])*t, y:a[1]+(b[1]-a[1])*t - Math.sin(t*Math.PI)*.12};
+  }
+  function loop(now){
+    const dt=Math.min(.05,(now-last)/1000); last=now;
+    const g=target(), k=1-Math.exp(-dt*2.4);
+    cur.x+=(g.x-cur.x)*k; cur.y+=(g.y-cur.y)*k;
+    const tt=now/1000, x=cur.x*innerWidth+Math.sin(tt*1.3)*14, y=cur.y*innerHeight+Math.sin(tt*2.1)*10;
+    const vx=x-px; px=x;
+    bf.style.transform=`translate(${x-32}px,${y-32}px) rotate(${Math.max(-25,Math.min(25,vx*1.5))}deg)`;
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+}
+</script>
+<script type="module">
+import { createClient } from "@supabase/supabase-js";
+const url = import.meta.env.VITE_SUPABASE_URL, key = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabase = url && key ? createClient(url, key) : null;
+const form = document.getElementById("signup"), msg = document.getElementById("signupMsg");
+form.onsubmit = async (e) => {
+  e.preventDefault();
+  if (!supabase) { location.href = "/app/"; return; }
+  msg.textContent = "Sending…";
+  const { error } = await supabase.auth.signInWithOtp({ email: document.getElementById("email").value.trim(), options: { emailRedirectTo: location.origin + "/app/" } });
+  msg.textContent = error ? `That didn't work: ${error.message}` : "Check your email and tap the link to open today's class.";
+};
+</script>
 </body>
 </html>
