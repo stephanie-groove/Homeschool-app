@@ -1,3 +1,4 @@
+import { SCENES, THEME_SCENE, sceneSvg as rScene, cardHtml, liveCards, openViewer } from "./reminders.js";
 import { sceneSvg, reveal, startButterfly, flyTo, spotFor } from "./scene.js";
 /* Reading Path app. Runs on top of src/backend.js, which provides window.claude (db, user, assets, sample) and blobSrc(). */
 const TRACKS = {
@@ -927,39 +928,44 @@ const DAY_REMINDERS = [
   ["Hard moment","When you feel yourself rising","Hand on your chest, one slow breath: \"They're having a hard time, not giving me one.\""],
   ["Evening","After the kids sleep","Write one sentence: something you're grateful for, and one way you showed up today."]
 ];
-const MOM_IMAGES = ["1iSP32Dgz3eY3QEp2JgGEqPgQdZTJRf56","1iDlutc4ufC1C3XhhW3gfhNlpC4dGj39y","1iBB4T8HcqKEDsShi6_-5mJpqPuYZMlKb","1i-QXBgb2s6Khyz5zsi5qUQIwq8G2lkjT","1iIssSua3ythadVezDCs_lWzjtJuBrGN4","1i4ooiuIj7-S5gj3HKWvJp6pgDuJVU2BQ","1iK26C-hl4lCtsbDtEht0Pb6YkpO0RgU0","1i6_IDT2evVM8Ur6J3mnT938bI0j-fo7W","1iGVSIzAEbp8d-CIGH0J9QEf7nOcNor6e","1hmoGmuJ35YQ3Xmwr98sKVW0FdT8VrupF","1iFtjInENRUB_pPsfhjyLqCZvoivWXDLt","1iSXjiIwYh0s_Xz_kbWFOUFqr_U6BFfYV","1iKvuRAeScglYrRxmSvr0Uy3IPyEkcHS2","1iK-7dGlm5HRItSS0gGTNbazoW4R5fgRz","1iAux90pnuUDbYeUX442gkPnwTjfOC3b3","1hj_2d5q7mh0azkkYwjAusr2Psnx74aCB","1i-sldFyNe8i5XSOL6HelzWbmXXxBdGuO","1hnOnnmuamJVmOk61XhE5OMO6A2u13IWy","1hm6WPsgdzrk_UG4mUweEPFOSODpp0PMn","1i9dypSiAUv-22dk1U2BjL0DL8orRLc8u","1hlMYJH85FGANlP-yStMp6nAxCh7rgMlc","1htGD3mJ2iNkENZvRzbALWECW1pNS4Ql_","1iPGez_7iVKe0Bj7ss5J4cQkSyocwzrvM","1hohmLhAcpOaPHNLA38iVPqM9I0tlRuCA","1iU50ESh0xLW1ajzQqoNZ6saPC28VoT7c","1i08f6VSZIBExha1C0-fM6-uSGsZjfeLN","1i8z3ouWGKyUyj4ucAryodIEPV_Bi0Js8","1hqfbbRzyaFxAjvbFy6ohBELDsVjkbAFD","1i6hv30rnimggxOCjw43vQrZdGJ6cRVTb","1iD-v-1zr5KZ6j_phVXBWPBlaoXrHeEO8","1iGKuF_nSQ1osLegYJPILF30te_8eOJHW","1iU00ds-82gH6cd_oDh9qp1s_xIjUoFZM","1i5ay-m_2bMDP6DqvJQWawD2svf7yD1yd","1hy17K7YRnu3C2SNYG6XWi9Rd1BuwJ9G1","1hkENykxtR3xMwkesph-3DyStggAqqXa1","1i0JTUOGEuD04VRqCBoA1keTn9j9KaDWv","1hqkSZc2jLg_plReFkzjsprrssSG0ulNx","1iB-K9dwdq-AMO0uEOh0pAPkGErJEFbAY","1hv9Dq5PV_4BAWg8ZwEr-A9iHXfr_Mauv","1hmjcHXW6WORneERE6gej_Wx8uw3KBEMD","1iLmlLfqMd3vSIFQS-EK7brk0PmsxaoLL","1hwITVHqIAXngmBxP38rpG_00tpMBz9Jo","1iPRAdL9wUBljeuyq87s9cqUe0KvUUcd4","1iA1oD7BS3hFEmzFyKHiPLARmHhIvsAAs","1iKn7-J_mIho3bnTH1hAAORVN4xi2O-5C"];
-MOM_IMAGES.length = 44;
 function affList(){ const th=state.affTheme||"all"; const own=(state.myAff||[]).map(t=>[t,"mine"]);
   const base=Object.entries(AFFIRM).flatMap(([k,v])=>v.map(t=>[t,k]));
   return th==="all"?[...base,...own] : th==="mine"?own : th==="fav"?[...base,...own].filter(([t])=>(state.favAff||[]).includes(t)) : base.filter(([,k])=>k===th); }
+function momItems(list){ return list.map(([t,k])=>({text:t, scene:k==="mine"?((state.affScene||{})[t]||"spring"):THEME_SCENE[k], tag:k==="mine"?"Written by you":AFF_THEMES[k]})); }
+function affIndex(list){ const day=Math.floor(Date.now()/864e5); return list.length? ((state.affIdx==null?day:state.affIdx)%list.length+list.length)%list.length : 0; }
 function momHtml(){
-  const list=affList(), th=state.affTheme||"all";
-  const day=Math.floor(Date.now()/864e5);
-  const idx=list.length? ((state.affIdx==null?day:state.affIdx)%list.length+list.length)%list.length : 0;
-  const cur=list[idx]; const fav=cur && (state.favAff||[]).includes(cur[0]);
-  return `<section class="box momhero"><p class="muted" style="margin:0">For you, Mom</p>
-    ${cur?`<p class="affirm">${esc(cur[0])}</p><p class="muted" style="margin:0 0 12px">${cur[1]==="mine"?"Written by you":AFF_THEMES[cur[1]]}</p>`:`<p class="affirm">Nothing here yet.</p>`}
-    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn alt" id="affPrev" aria-label="Previous affirmation">Back</button><button class="btn" id="affNext" style="flex:1">Another one</button><button class="btn alt" id="affFav" aria-pressed="${!!fav}">${fav?"Saved ♥":"Save ♡"}</button><button class="btn alt" id="affSay">Read aloud</button></div>
+  const list=affList(), th=state.affTheme||"all", items=momItems(list), idx=affIndex(list), cur=items[idx];
+  const fav=cur && (state.favAff||[]).includes(cur.text), pick=state.newScene||"spring";
+  const open=(i,label)=>`data-rc="${i}" role="button" tabindex="0" aria-label="${label}"`;
+  return `<section class="rhero">
+    ${cur?cardHtml(esc(cur.text), cur.scene, esc(cur.tag), open(idx,"Open today's reminder full screen")):`<div class="rcard ink-dark">${rScene("meadow")}<span class="rtext">Nothing here yet. Write your own below.</span></div>`}
+    <div class="rctl"><button class="btn alt" id="affPrev" aria-label="Previous reminder">Back</button><button class="btn" id="affNext">Another one</button><button class="btn alt" id="affFav" aria-pressed="${!!fav}">${fav?"Saved":"Save"}</button><button class="btn alt" id="affSay">Read aloud</button></div>
     <div class="filters">${[["all","All"],...Object.entries(AFF_THEMES),["fav","My favorites"],["mine","Written by me"]].map(([k,l])=>`<button data-th="${k}" aria-pressed="${th===k}">${l}</button>`).join("")}</div></section>
-  <section class="box"><h2>Reminders through the day</h2><p class="muted" style="margin:0 0 6px">Four tiny check-ins. Ask Claude in chat to put them on your phone at the times that suit you.</p>
-    ${DAY_REMINDERS.map(([a,b,c])=>`<div class="dayrow" style="display:block"><b>${a}</b> <span class="muted">· ${b}</span><br>${esc(c)}</div>`).join("")}</section>
-  <section class="box"><h2>Write your own</h2><p class="muted" style="margin:0 0 6px">The words you most need to hear, in your own voice.</p>
-    <textarea id="myAff" placeholder="e.g. I'm the mom my kids need, even on the messy days."></textarea><button class="btn alt wide" id="addAff" style="margin-top:8px">Add to my affirmations</button>
+  <section class="box"><h2>Your reminders</h2><p class="muted" style="margin:0 0 12px">${items.length} reminder${items.length===1?"":"s"}${th==="all"?"":" in this group"}. Tap one to open it big, then swipe through.</p>
+    ${items.length?`<div class="rgrid">${items.map((it,i)=>cardHtml(esc(it.text), it.scene, esc(it.tag), open(i,"Open reminder full screen"))).join("")}</div>`:`<p class="muted">None yet.</p>`}</section>
+  <section class="box"><h2>Write your own</h2><p class="muted" style="margin:0 0 8px">The words you most need to hear. You can also type in the words from a favorite quote image, then pick a scene for it.</p>
+    <label class="f" for="myAff">Your reminder</label><textarea id="myAff" maxlength="240" placeholder="e.g. I'm the mom my kids need, even on the messy days."></textarea>
+    <p class="f" id="pickLbl">Scene</p>
+    <div class="scenepick" role="radiogroup" aria-labelledby="pickLbl">${Object.entries(SCENES).map(([k,sc])=>`<button role="radio" aria-checked="${pick===k}" data-scene="${k}"><span class="sw" style="background:linear-gradient(${sc.sky[0]},${sc.sky[1]} 58%,${sc.hills[1]} 58%)"></span>${sc.label}</button>`).join("")}</div>
+    <button class="btn wide" id="addAff" style="margin-top:12px">Add my reminder</button>
     ${(state.myAff||[]).length?`<ul class="mat">${state.myAff.map((t,i)=>`<li>${esc(t)} <button class="linkbtn" data-delaff="${i}">remove</button></li>`).join("")}</ul>`:""}</section>
-  <section class="box"><h2>Your saved reminders</h2><p class="muted" style="margin:0 0 8px">The ${MOM_IMAGES.length} quote images and screenshots from your folder. Open one when you need it, and give it a name so you can find it again.</p>
-    <a class="btn alt" href="https://drive.google.com/drive/folders/1hjJFz7jflrXUJxwdjRSv7rcX1tvFmCgP" target="_blank" rel="noopener">Open the whole folder</a>
-    <div class="imggrid">${MOM_IMAGES.map((id,i)=>{ const lab=state.labels[id]; return `<a href="${DRIVE(id)}" target="_blank" rel="noopener" class="imgtile">${lab?esc(lab.t):`Reminder ${i+1}`}</a>`; }).join("")}</div></section>`;
+  <section class="box"><h2>Reminders through the day</h2><p class="muted" style="margin:0 0 6px">Four tiny check-ins. Ask Claude in chat to put them on your phone at the times that suit you.</p>
+    ${DAY_REMINDERS.map(([a,b,c])=>`<div class="dayrow" style="display:block"><b>${a}</b> <span class="muted">· ${b}</span><br>${esc(c)}</div>`).join("")}</section>`;
 }
 function bindMom(){
-  bindView();
-  const step=d=>{ const l=affList(); const day=Math.floor(Date.now()/864e5); state.affIdx=((state.affIdx==null?day:state.affIdx)+d); render(); };
+  const list=affList(), items=momItems(list), cur=items[affIndex(list)];
+  const step=d=>{ const day=Math.floor(Date.now()/864e5); state.affIdx=((state.affIdx==null?day:state.affIdx)+d); render(); };
+  const toggleFav=t=>{ const f=state.favAff=state.favAff||[]; const k=f.indexOf(t); if(k<0) f.push(t); else f.splice(k,1); save(); };
   $("affNext").onclick=()=>step(1); $("affPrev").onclick=()=>step(-1);
-  const l=affList(), day=Math.floor(Date.now()/864e5), i=l.length?(((state.affIdx==null?day:state.affIdx)%l.length)+l.length)%l.length:0, cur=l[i];
-  $("affFav").onclick=()=>{ if(!cur) return; const f=state.favAff=state.favAff||[]; const k=f.indexOf(cur[0]); if(k<0) f.push(cur[0]); else f.splice(k,1); save(); render(); };
-  $("affSay").onclick=()=>{ if(cur) say(cur[0],.85); };
+  $("affFav").onclick=()=>{ if(!cur) return; toggleFav(cur.text); render(); };
+  $("affSay").onclick=()=>{ if(cur) say(cur.text,.85); };
   document.querySelectorAll("[data-th]").forEach(b=>b.onclick=()=>{ state.affTheme=b.dataset.th; state.affIdx=0; save(); render(); });
-  $("addAff").onclick=()=>{ const t=$("myAff").value.trim(); if(!t) return; (state.myAff=state.myAff||[]).push(t.slice(0,240)); state.affTheme="mine"; state.affIdx=state.myAff.length-1; save(); render(); };
+  const open=i=>openViewer(items,i,{ isFav:j=>(state.favAff||[]).includes(items[j].text), toggleFav:j=>toggleFav(items[j].text), say:t=>say(t,.85) });
+  document.querySelectorAll("[data-rc]").forEach(c=>{ c.onclick=()=>open(+c.dataset.rc); c.onkeydown=e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); open(+c.dataset.rc); } }; });
+  document.querySelectorAll("[data-scene]").forEach(b=>b.onclick=()=>{ state.newScene=b.dataset.scene; document.querySelectorAll("[data-scene]").forEach(x=>x.setAttribute("aria-checked", x===b)); save(); });
+  $("addAff").onclick=()=>{ const t=$("myAff").value.trim().slice(0,240); if(!t) return; (state.myAff=state.myAff||[]).push(t); (state.affScene=state.affScene||{})[t]=state.newScene||"spring"; state.affTheme="mine"; state.affIdx=state.myAff.length-1; save(); render(); };
   document.querySelectorAll("[data-delaff]").forEach(b=>b.onclick=()=>{ state.myAff.splice(+b.dataset.delaff,1); save(); render(); });
+  liveCards($("app"));
 }
 
 for (const k in TRACKS) { const t=TRACKS[k]; t.weeks=[]; t.units.forEach(([u,ws])=>ws.forEach(w=>t.weeks.push({...w,unit:u}))); }
@@ -1415,7 +1421,7 @@ function save(){
 function merge(s){
   if(!s) return;
   for (const k of ["tab","mode","muted","prayer","intro","view"]) if (s[k]!==undefined) state[k]=s[k];
-  state.stories=s.stories||state.stories; state.log=s.log||state.log; state.errors=s.errors||state.errors; state.bugs=s.bugs||state.bugs; state.favAff=s.favAff||[]; state.myAff=s.myAff||[]; if(s.affTheme) state.affTheme=s.affTheme; state.labels=s.labels||state.labels; if(s.shelf) state.shelf=s.shelf; state.placed={...state.placed,...(s.placed||{})};
+  state.stories=s.stories||state.stories; state.log=s.log||state.log; state.errors=s.errors||state.errors; state.bugs=s.bugs||state.bugs; state.favAff=s.favAff||[]; state.myAff=s.myAff||[]; state.affScene=s.affScene||{}; if(s.newScene) state.newScene=s.newScene; if(s.affTheme) state.affTheme=s.affTheme; state.labels=s.labels||state.labels; if(s.shelf) state.shelf=s.shelf; state.placed={...state.placed,...(s.placed||{})};
   for (const k of []) if (s[k]!==undefined) state[k]=s[k];
   state.videos=s.videos||state.videos; state.names={...state.names,...(s.names||{})};
   if (Array.isArray(s.basket)) s.basket={phonics:s.basket,spelling:[]};

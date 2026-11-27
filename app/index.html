@@ -7,7 +7,7 @@
 <meta name="description" content="One calm homeschool class a day: phonics, spelling, nature study and support for tired moms.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Oswald:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,500&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#EFEBE3; --card:#FAF8F4; --ink:#3B352E; --soft:#776E63; --edge:#DDD5C7;
@@ -525,6 +525,68 @@ body.locked .bnav{display:none}
 #authGate .gatecard .f,#authGate .gatecard .muted{color:#55624F}
 #authGate .gatecard input{background:#FBFAEC!important; color:#2B3A2E!important}
 #authGate .gatecard .btn{background:#2F4A35; color:#fff}
+
+/* ===== For Mom: reminder cards (text on a painted scene, with gentle motion) ===== */
+.rcard{position:relative; display:flex; flex-direction:column; justify-content:flex-start; aspect-ratio:4/5; border-radius:24px; overflow:hidden; isolation:isolate; cursor:pointer; text-align:center; padding:18% 10% 0; box-shadow:0 6px 18px rgba(43,58,46,.12); transition:transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s}
+.rcard:hover{transform:translateY(-3px); box-shadow:0 12px 28px rgba(43,58,46,.18)}
+.rcard .rscene{position:absolute; inset:0; width:100%; height:100%; z-index:-1}
+.rtext{font-family:"Fraunces",Georgia,serif; font-style:italic; font-weight:500; font-size:clamp(.95rem,3.8vw,1.15rem); line-height:1.35; color:#22352A; text-shadow:0 0 12px rgba(255,255,255,.9),0 0 3px rgba(255,255,255,.8)}
+.rtag{position:absolute; left:50%; bottom:7%; transform:translateX(-50%); white-space:nowrap; font-family:"Oswald",sans-serif; text-transform:uppercase; letter-spacing:.12em; font-size:.68rem; color:#fff; background:rgba(34,53,42,.38); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); border-radius:99px; padding:3px 10px}
+.ink-light .rtext{color:#FBF5E2; text-shadow:0 1px 10px rgba(10,16,30,.6)}
+.rgrid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px}
+@media (min-width:520px){ .rgrid{grid-template-columns:repeat(3,1fr)} }
+.rgrid .rtext{font-size:clamp(.82rem,3.4vw,.98rem)}
+.rhero{margin-bottom:16px}
+.rhero .rcard{aspect-ratio:4/4.4; padding:16% 9% 0; border-radius:28px; box-shadow:0 14px 34px rgba(43,58,46,.2)}
+.rhero .rtext{font-size:clamp(1.35rem,6.4vw,1.9rem)}
+.rhero .rtag{font-size:.75rem}
+.rctl{display:flex; gap:8px; flex-wrap:wrap; margin:14px 0 4px}
+.rctl #affNext{flex:1}
+.scenepick{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+.scenepick button{display:flex; flex-direction:column; align-items:center; gap:4px; border:1.5px solid var(--edge); background:var(--card); border-radius:16px; padding:8px 4px; font-size:.82rem}
+.scenepick .sw{width:100%; height:36px; border-radius:10px}
+.scenepick button[aria-checked="true"]{border-color:var(--forest); box-shadow:inset 0 0 0 1.5px var(--forest)}
+
+/* full-screen reminder */
+.rview{position:fixed; inset:0; z-index:55; background:rgba(20,28,22,.72); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px)); touch-action:pan-y; animation:fadein .35s ease both}
+.rv-stage{width:min(460px,100%); animation:cardin .55s cubic-bezier(.2,.8,.2,1) both}
+.rv-stage.from-r{animation-name:fromr} .rv-stage.from-l{animation-name:froml}
+.rcard.big{aspect-ratio:4/5.2; max-height:72vh; margin:0 auto; padding:18% 9% 0; border-radius:30px; cursor:default}
+.rcard.big .rtext{font-size:clamp(1.5rem,7vw,2.2rem)}
+.rcard.big .rtag{font-size:.8rem}
+.rv-close{position:absolute; top:calc(14px + env(safe-area-inset-top,0px)); right:14px}
+.rv-bar{display:flex; gap:12px}
+.rv-b{width:54px; height:54px; border-radius:50%; border:1.5px solid rgba(255,255,255,.6); background:rgba(255,255,255,.14); display:grid; place-items:center}
+.rv-b svg{width:22px; height:22px; fill:none; stroke:#fff; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+.rv-b[aria-pressed="true"]{background:#F3BFCB; border-color:#F3BFCB} .rv-b[aria-pressed="true"] svg{stroke:#5A2B36; fill:#5A2B36}
+.rv-count{margin:0; color:rgba(255,255,255,.75); font-size:.85rem}
+@keyframes fadein{from{opacity:0}}
+@keyframes cardin{from{opacity:0; transform:translateY(24px) scale(.96)}}
+@keyframes fromr{from{opacity:0; transform:translateX(60px) rotate(2deg)}}
+@keyframes froml{from{opacity:0; transform:translateX(-60px) rotate(-2deg)}}
+
+/* scene motion: only on cards that are on screen */
+.rcard *{animation-play-state:paused}
+.rcard.live *{animation-play-state:running}
+.r-cloud{animation:rcloud 14s ease-in-out infinite alternate}
+.r-cloud.b{animation-duration:19s; animation-delay:-6s}
+@keyframes rcloud{from{translate:-18px 0} to{translate:22px 0}}
+.r-tree{transform-box:fill-box; transform-origin:50% 100%; animation:rustle 6s ease-in-out infinite}
+.rtext{animation:float 7s ease-in-out infinite}
+@keyframes float{0%,100%{translate:0 0} 50%{translate:0 -4px}}
+.p-star{animation:twinkle calc(3s * var(--s)) ease-in-out infinite; animation-delay:var(--d)}
+@keyframes twinkle{0%,100%{opacity:.25} 50%{opacity:1}}
+.p-rain{animation:rain calc(1.1s * var(--s)) linear infinite; animation-delay:var(--d)}
+@keyframes rain{from{translate:0 0; opacity:0} 15%{opacity:1} to{translate:-30px 120px; opacity:0}}
+.p-fly{animation:fly calc(6s * var(--s)) ease-in-out infinite; animation-delay:var(--d)}
+@keyframes fly{0%,100%{translate:0 0; opacity:.2} 30%{opacity:1} 50%{translate:14px -22px; opacity:.9} 80%{translate:-10px -8px; opacity:.35}}
+.p-mote{animation:mote calc(9s * var(--s)) ease-in-out infinite; animation-delay:var(--d)}
+@keyframes mote{from{translate:0 0; opacity:0} 30%{opacity:.9} to{translate:20px -120px; opacity:0}}
+.p-seed{animation:seed calc(11s * var(--s)) linear infinite; animation-delay:var(--d)}
+@keyframes seed{from{translate:0 0; opacity:0} 15%{opacity:1} to{translate:120px -260px; rotate:25deg; opacity:0}}
+.p-petal{animation:petal calc(9s * var(--s)) linear infinite; animation-delay:var(--d)}
+@keyframes petal{from{translate:0 -20px; rotate:0deg; opacity:0} 10%{opacity:1} to{translate:-70px 420px; rotate:300deg; opacity:.2}}
+@media (prefers-reduced-motion:reduce){ .rcard *, .rview, .rv-stage{animation:none!important} .rcard:hover{transform:none} }
 </style>
 </head>
 <body>
