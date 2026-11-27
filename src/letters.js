@@ -132,8 +132,10 @@ export function openLetter(l) {
 
 /* ---------- Find the picture that starts with the sound ---------- */
 function findHtml(l) {
-  const target = (PICS[l] || []).find(pic) || (PICS[l] || [])[0] || wordFor(l);
-  const others = ORDER.filter((x) => x !== l && SOUND[x] !== SOUND[l] && x !== "x").flatMap((x) => (PICS[x] || []).filter(pic)).filter((w, i, a) => a.indexOf(w) === i && w !== target && !(l === "x" && /x$/.test(w)));
+  // Prefer the letter's own picture word (s: snake), then other photo words for the sound.
+  const own = wordFor(l);
+  const target = pic(own) ? own : (PICS[l] || []).find(pic) || (PICS[l] || [])[0] || own;
+  const others = ORDER.filter((x) => x !== l && SOUND[x] !== SOUND[l] && x !== "x").flatMap((x) => [wordFor(x), ...(PICS[x] || [])].filter(pic)).filter((w, i, a) => a.indexOf(w) === i && w !== target && !(l === "x" && /x$/.test(w)));
   const seed = ORDER.indexOf(l) * 7;
   const pick = [others[seed % (others.length || 1)], others[(seed + 5) % (others.length || 1)]].filter(Boolean).filter((w, i, a) => a.indexOf(w) === i);
   const opts = [target, ...pick].sort((a, b) => ((a.charCodeAt(0) * 13 + seed) % 7) - ((b.charCodeAt(0) * 13 + seed) % 7));
