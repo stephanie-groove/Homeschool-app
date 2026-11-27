@@ -1,3 +1,4 @@
+import * as LT from "./letters.js";
 import WORD_PHOTOS from "./word-photos.js";
 import { SCENES, THEME_SCENE, sceneSvg as rScene, cardHtml, liveCards, openViewer } from "./reminders.js";
 import { sceneSvg, reveal, startButterfly, flyTo, spotFor } from "./scene.js";
@@ -1038,6 +1039,7 @@ function storyHtml(st, w){
 /* ---------- main page ---------- */
 const NAV = [
   ["today","Today",'<path d="M4 11l8-7 8 7v9H4z"/>'],
+  ["path","Letters",'<path d="M6 20c2-3 6-3 6-7s4-4 6-7"/><circle cx="6" cy="20" r="1.6"/><circle cx="12" cy="13" r="1.6"/><circle cx="18" cy="6" r="1.6"/>'],
   ["week","Week plan",'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/>'],
   ["dash","Dashboard",'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'],
   ["coach","Coach",'<path d="M4 5h16v11H9l-5 4z"/>']
@@ -1061,7 +1063,7 @@ function skyHead({kicker="", title="", back=false, top="", extra="", tall=false}
     ${back?`<button class="x glass" data-view="today" aria-label="Back to Today">${svg(BACK)}</button>`:""}${top}
     ${kicker?`<p class="kicker">${kicker}</p>`:""}<h1>${title}</h1>${extra}</div></header>`;
 }
-const VIEW_SPOT = {today:[.14,.5], week:[.2,.3], dash:[.22,.26], mom:[.2,.26], calm:[.24,.27], bugs:[.2,.26], print:[.22,.27], library:[.2,.26]};
+const VIEW_SPOT = {path:[.18,.26], garden:[.2,.26], journal:[.2,.26], lsettings:[.2,.26], today:[.14,.5], week:[.2,.3], dash:[.22,.26], mom:[.2,.26], calm:[.24,.27], bugs:[.2,.26], print:[.22,.27], library:[.2,.26]};
 let lastView = null;
 
 function navHtml(){
@@ -1072,7 +1074,7 @@ function navHtml(){
 function render(){
   const v = state.view || "today";
   if (typeof stopBreath==="function" && v!=="calm") stopBreath();
-  const VIEWS = {today:[todayHtml,bindToday], week:[weekHtml,bindWeek], dash:[dashHtml,bindDash], mom:[momHtml,bindMom], calm:[calmHtml,bindCalm], bugs:[bugsHtml,bindBugs], print:[printHtml,bindPrint], library:[libHtml,bindLib]};
+  const VIEWS = {today:[todayHtml,bindToday], path:[LT.pathHtml,LT.bindPath], garden:[LT.gardenHtml,LT.bindGarden], journal:[LT.journalHtml,LT.bindJournal], lsettings:[LT.settingsHtml,LT.bindSettings], week:[weekHtml,bindWeek], dash:[dashHtml,bindDash], mom:[momHtml,bindMom], calm:[calmHtml,bindCalm], bugs:[bugsHtml,bindBugs], print:[printHtml,bindPrint], library:[libHtml,bindLib]};
   const [html, bind] = VIEWS[v] || VIEWS.today;
   let top = "";
   if (v==="dash") top = skyHead({kicker:"Faithful, not perfect", title:"Dashboard"});
@@ -1105,6 +1107,7 @@ function todayHtml(){
 
   h += `<nav class="hub" aria-label="More">${HUB.map(([k,l,c,p])=>`<button data-view="${k}"><span class="ico ${c}">${svg(p)}</span>${l}</button>`).join("")}</nav>`;
 
+  h += LT.todayCardHtml();
   if (day<0){
     h += `<section class="box"><h2>Week ${wi+1} is complete</h2><p class="muted">Lovely work. Repeat any lesson that felt hard, or move on when it feels easy.</p>
       <button class="btn wide" id="nextWeek" ${wi===total-1?"disabled":""}>Start week ${wi+2}</button></section>`;
@@ -1139,6 +1142,7 @@ function todayHtml(){
 
 function bindToday(){
   const s=S(), wi=s.cur;
+  document.querySelectorAll("[data-letter]").forEach(b=>b.onclick=()=>LT.openLetter(b.dataset.letter));
   $("switchKid").onclick=()=>{ state.tab = state.tab==="phonics" ? "spelling" : "phonics"; save(); render(); };
   document.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{ state.mode=b.dataset.mode; save(); render(); });
   if ($("nextWeek")) $("nextWeek").onclick=()=>{ s.cur=wi+1; save(); render(); };
@@ -1441,8 +1445,14 @@ function save(){
     if(saveFn){ try{ await saveFn(state); }catch(e){ const el=$("status"); if(el) el.textContent="Saved on this device only."; } }
   },500);
 }
+// What the letters module needs from the app (read lazily, so it always sees the current values).
+const LTX = { get state(){ return state; }, save:()=>save(), render:()=>render(), say:(t,r)=>say(t,r), esc:t=>esc(t), $:id=>$(id),
+  alphaSvg:(l,sz)=>alphaSvg(l,sz), get ALPHA(){ return ALPHA; }, photoOf:w=>photoOf(w), skyHead:o=>skyHead(o), svg:p=>svg(p),
+  resetAccount: async()=>{ if(saveFn){ try{ await saveFn({}); }catch(e){} } } };
+LT.init(LTX);
 function merge(s){
   if(!s) return;
+  state.letters=s.letters||state.letters; state.journal=s.journal||state.journal; state.ages={...state.ages,...(s.ages||{})}; LT.init(LTX);
   for (const k of ["tab","mode","muted","prayer","intro","view"]) if (s[k]!==undefined) state[k]=s[k];
   state.stories=s.stories||state.stories; state.log=s.log||state.log; state.errors=s.errors||state.errors; state.bugs=s.bugs||state.bugs; state.favAff=s.favAff||[]; state.myAff=s.myAff||[]; state.affScene=s.affScene||{}; if(s.newScene) state.newScene=s.newScene; if(s.affTheme) state.affTheme=s.affTheme; state.labels=s.labels||state.labels; if(s.shelf) state.shelf=s.shelf; state.placed={...state.placed,...(s.placed||{})};
   for (const k of []) if (s[k]!==undefined) state[k]=s[k];
@@ -1802,4 +1812,5 @@ window.render = render;
   renderSeg = function(){ baseSeg.apply(this, arguments); const cb=$("cbody"); cb.classList.remove("rise"); void cb.offsetWidth; cb.classList.add("rise"); if (C) flyTo(...spotFor(C.i)); };
   document.querySelectorAll(".scn").forEach(e=>{ if(!e.firstChild) e.innerHTML=sceneSvg(); });
   startButterfly();
+  render(); // again, now that the picture-letter art is ready
 }
